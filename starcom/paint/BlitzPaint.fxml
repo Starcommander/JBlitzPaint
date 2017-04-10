@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+
+
+<BorderPane fx:controller="starcom.paint.BlitzPaintFrame"
+    xmlns:fx="http://javafx.com/fxml" prefHeight="200" prefWidth="320">
+
+  <top>
+    <GridPane
+    xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10"
+    styleClass="root">
+
+      <padding><Insets top="10" right="25" bottom="25" left="25"/></padding>
+    
+      <Label text="MAP DATA"
+        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+
+      <Button fx:id="ArrowTool" GridPane.columnIndex="0" GridPane.rowIndex="0" onAction="#selectTool">
+	    <graphic>
+	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/BlitzPaintArrow.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+	  
+	  <Button fx:id="FrameTool" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#selectTool">
+	    <graphic>
+	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/BlitzPaintArrow.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+	  
+	  <Button fx:id="settingsButton" GridPane.columnIndex="3" GridPane.rowIndex="0" onAction="#selectSet">
+	    <graphic>
+	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/BlitzPaintArrow.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+    </GridPane>
+  </top>
+
+  <center>
+    <ScrollPane fx:id="scrollPane">
+      <VBox alignment="CENTER" minWidth="${scrollPane.viewportBounds.width}">
+        <HBox alignment="CENTER" minHeight="${scrollPane.viewportBounds.height}">
+          <Pane fx:id="pane" />
+        </HBox>
+      </VBox>
+    </ScrollPane>
+  </center>
+
+
+</BorderPane>
