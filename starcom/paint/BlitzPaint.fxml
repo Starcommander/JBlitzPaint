@@ -26,7 +26,7 @@
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
-	          <Image url="starcom/paint/BlitzPaintArrow.png" />
+	          <Image url="starcom/paint/icons/go_up.png" />
 	        </image>
 	      </ImageView>
 	    </graphic>
@@ -36,13 +36,23 @@
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
-	          <Image url="starcom/paint/BlitzPaintArrow.png" />
+	          <Image url="starcom/paint/icons/network_wired.png" />
 	        </image>
 	      </ImageView>
 	    </graphic>
 	  </Button>
 	  
-	  <Button fx:id="settingsButton" GridPane.columnIndex="3" GridPane.rowIndex="0" onAction="#selectSet">
+	  <Button fx:id="TxtTool" GridPane.columnIndex="2" GridPane.rowIndex="0" onAction="#selectTool">
+	    <graphic>
+	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/icons/preferences_desktop_font.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+	  
+	  <Button fx:id="settingsButton" GridPane.columnIndex="5" GridPane.rowIndex="0" onAction="#selectSet">
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
@@ -51,6 +61,27 @@
 	      </ImageView>
 	    </graphic>
 	  </Button>
+	  
+	  <Button fx:id="LoadBut" GridPane.columnIndex="6" GridPane.rowIndex="0" onAction="#selectAction">
+	    <graphic>
+	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/icons/document_open.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+	  
+	  <Button fx:id="SaveBut" GridPane.columnIndex="7" GridPane.rowIndex="0" onAction="#selectAction">
+	    <graphic>
+	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/icons/document_save.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+	  
     </GridPane>
   </top>
 

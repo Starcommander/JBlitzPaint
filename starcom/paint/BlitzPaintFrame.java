@@ -1,9 +1,12 @@
 package starcom.paint;
 
+import java.io.File;
 import java.util.HashMap;
 
 import starcom.paint.tools.ITool;
 import starcom.paint.tools.ITool.EventType;
+import starcom.system.ClipboardTool;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,22 +14,23 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 
 public class BlitzPaintFrame
 {
   @FXML private Pane pane;
   @FXML private ScrollPane scrollPane;
   @FXML private Button settingsButton;
+  private ClipboardTool clipTool = new ClipboardTool();
   private Background settingsButtonBG;
   HashMap<String,ITool> tools = new HashMap<String,ITool>();
   boolean isDrag = false;
@@ -41,7 +45,9 @@ public class BlitzPaintFrame
     pane.setOnMouseReleased(createDrag(EventType.RELEASE));
     pane.setOnMouseDragged(createDrag(EventType.MOVE));
     pane.setStyle("-fx-border-color: black");
-    pane.getChildren().add(createImageView("starcom/paint/BlitzPaintArrow.png"));
+    Image contentPix = clipTool.getImageFromClipboard();
+    if (contentPix==null) { contentPix = new Image("starcom/paint/BlitzPaintArrow.png"); }
+    pane.getChildren().add(createImageView(contentPix));
     selectTool("ArrowTool");
   }
   
@@ -90,6 +96,65 @@ public class BlitzPaintFrame
       throw new IllegalStateException("Selected from unknown source: " + source);
     }
   }
+  
+  @FXML void selectAction(ActionEvent event)
+  {
+    Object source = event.getSource();
+    if (source instanceof Node)
+    {
+      Node sourceN = (Node) source;
+      if (sourceN.getId().equals("SaveBut"))
+      {
+        loadSave(true);
+      }
+      else if (sourceN.getId().equals("LoadBut"))
+      {
+        loadSave(false);
+      }
+    }
+    else
+    {
+      throw new IllegalStateException("Selected from unknown source: " + source);
+    }
+  }
+  
+  void loadSave(boolean do_save)
+  {
+    FileChooser fileChooser = new FileChooser();
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.bmp");
+    fileChooser.getExtensionFilters().add(extFilter);
+   
+    //Show save file dialog
+    File file = null;
+    if (do_save)
+    {
+      file = fileChooser.showSaveDialog(null);
+    }
+    else
+    {
+      file = fileChooser.showOpenDialog(null);
+    }
+    if(file != null)
+    {
+      loadSaveDirect(do_save, file.getPath());
+    }
+  }
+  
+  void loadSaveDirect(boolean do_save, String file)
+  {
+    if (do_save)
+    {
+      WritableImage image = new WritableImage((int)pane.getWidth(), (int)pane.getHeight());
+      pane.snapshot(null, image);
+      starcom.pix.Saver.save(SwingFXUtils.fromFXImage(image,null), file);
+    }
+    else
+    {
+      Image contentPix = new Image("file:" + file);
+      pane.getChildren().clear();
+      pane.getChildren().add(createImageView(contentPix));
+    }
+  }
 
   @FXML void selectSet(ActionEvent event)
   {
@@ -121,9 +186,8 @@ public class BlitzPaintFrame
     tools.put(id, currentTool);
   }
 
-  private ImageView createImageView(String file)
+  private ImageView createImageView(Image image)
   {
-    Image image = new Image(file);
     ImageView iv = new ImageView();
     iv.setImage(image);
     return iv;
