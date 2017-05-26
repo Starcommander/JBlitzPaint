@@ -3,33 +3,34 @@ package starcom.paint.tools;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.shape.Rectangle;
 
 public class FrameTool implements ITool
 {
-  static int tail_len = 30;
   static int line_thick = 5;
   static double opacity = 0.8;
   Pane pane;
-  Line line[] = new Line[4];
-  
-  void makeShapeLine(int nr)
+  Rectangle r;
+
+  void makeRect()
   {
-    line[nr] = new Line();
-    line[nr].setStroke(Color.RED);
-    line[nr].setStrokeWidth(line_thick);
-    line[nr].setStrokeLineCap(StrokeLineCap.BUTT);
-    line[nr].setOpacity(opacity);
-    pane.getChildren().add(line[nr]);
+    r = new Rectangle();
+    r.setX(10);
+    r.setY(10);
+    r.setWidth(20);
+    r.setHeight(20);
+    r.setArcWidth(5);
+    r.setArcHeight(5);
+    r.setOpacity(opacity);
+    r.setStrokeWidth(line_thick);
+    r.setFill(null);
+    r.setStroke(Color.RED);
+    pane.getChildren().add(r);
   }
   
   void makeShape()
   {
-    makeShapeLine(0);
-    makeShapeLine(1);
-    makeShapeLine(2);
-    makeShapeLine(3);
+    makeRect();
   }
 
   @Override
@@ -44,10 +45,10 @@ public class FrameTool implements ITool
     EventHandle:
     if (evType == EventType.MOVE)
     {
-      if (line[3]==null) { break EventHandle; }
+      if (r==null) { break EventHandle; }
       double posX = event.getX();
       double posY = event.getY();
-      update(line[0].getStartX(),line[0].getStartY(),posX,posY);
+      update(r.getX(),r.getY(),posX,posY);
     }
     else if (evType == EventType.CLICK)
     {
@@ -58,26 +59,24 @@ public class FrameTool implements ITool
     }
     else if (evType == EventType.RELEASE)
     {
-      line[0] = null;
-      line[1] = null;
-      line[2] = null;
-      line[3] = null;
+      r = null;
     }
   }
 
   private void update(double x1, double y1, double x2, double y2)
   {
-    updateLine(0, x1, y1, x2, y1);
-    updateLine(1, x2, y2, x1, y2);
-    updateLine(2, x1, y1, x1, y2);
-    updateLine(3, x2, y2, x2, y1);
+    updateRect(x1, y1, x2, y2);
   }
-  private void updateLine(int nr, double x1, double y1, double x2, double y2)
+
+  private void updateRect(double x1, double y1, double x2, double y2)
   {
-    /* Line start end. */
-    line[nr].setStartX(x1);
-    line[nr].setStartY(y1);
-    line[nr].setEndX(x2);
-    line[nr].setEndY(y2);
+    r.setX(x1);
+    r.setY(y1);
+    double w = x2-x1;
+    if (w<20) { w = 20; }
+    r.setWidth(w);
+    double h = y2-y1;
+    if (h<20) { h = 20; }
+    r.setHeight(h);
   }
 }

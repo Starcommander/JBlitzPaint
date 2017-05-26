@@ -22,7 +22,7 @@
       <Label text="MAP DATA"
         GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 
-      <Button fx:id="ArrowTool" GridPane.columnIndex="0" GridPane.rowIndex="0" onAction="#selectTool">
+      <Button fx:id="arrowTool" GridPane.columnIndex="0" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
@@ -32,7 +32,7 @@
 	    </graphic>
 	  </Button>
 	  
-	  <Button fx:id="FrameTool" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#selectTool">
+	  <Button fx:id="frameTool" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
@@ -42,7 +42,7 @@
 	    </graphic>
 	  </Button>
 	  
-	  <Button fx:id="TxtTool" GridPane.columnIndex="2" GridPane.rowIndex="0" onAction="#selectTool">
+	  <Button fx:id="txtTool" GridPane.columnIndex="2" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
@@ -56,13 +56,13 @@
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
-	          <Image url="starcom/paint/BlitzPaintArrow.png" />
+	          <Image url="starcom/paint/icons/preferences_system.png" />
 	        </image>
 	      </ImageView>
 	    </graphic>
 	  </Button>
 	  
-	  <Button fx:id="LoadBut" GridPane.columnIndex="6" GridPane.rowIndex="0" onAction="#selectAction">
+	  <Button fx:id="loadBut" GridPane.columnIndex="6" GridPane.rowIndex="0" onAction="#selectAction">
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
@@ -72,7 +72,7 @@
 	    </graphic>
 	  </Button>
 	  
-	  <Button fx:id="SaveBut" GridPane.columnIndex="7" GridPane.rowIndex="0" onAction="#selectAction">
+	  <Button fx:id="saveBut" GridPane.columnIndex="7" GridPane.rowIndex="0" onAction="#selectAction">
 	    <graphic>
 	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
 	        <image>

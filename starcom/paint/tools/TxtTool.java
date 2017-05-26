@@ -52,8 +52,9 @@ public class TxtTool implements ITool
   void makeText()
   {
     DropShadow ds = new DropShadow();
-    ds.setOffsetY(3.0f);
-    ds.setColor(Color.GRAY);
+    ds.setOffsetX(2.0f);
+    ds.setOffsetY(5.0f);
+    ds.setColor(Color.BLACK);
     t = new Text();
     t.setX(10);
     t.setY(10);

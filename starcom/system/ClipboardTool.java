@@ -13,6 +13,7 @@ import javax.jnlp.ClipboardService;
 import javax.jnlp.ServiceManager;
 import javax.jnlp.UnavailableServiceException;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import starcom.debug.LoggingSystem;
 
@@ -33,7 +34,7 @@ public class ClipboardTool
     }
   }
   
-  boolean setImageToClipboard(Image image)
+  public boolean putImageToClipboard(Image image)
   {
     if (cs == null) { return false; }
     ImageSelection imageSel = new ImageSelection(image);
@@ -69,13 +70,18 @@ public class ClipboardTool
 
   static class ImageSelection implements Transferable
   {
-    private Image image;
+    private java.awt.Image awtImage;
 
     public ImageSelection(Image image)
     {
-      this.image = image;
+      this.awtImage = SwingFXUtils.fromFXImage(image, null);
     }
-
+    
+    public ImageSelection(java.awt.Image image)
+    {
+      this.awtImage = image;
+    }
+    
     @Override
     public DataFlavor[] getTransferDataFlavors()
     {
@@ -95,7 +101,7 @@ public class ClipboardTool
       {
         throw new UnsupportedFlavorException(flavor);
       }
-      return image;
+      return awtImage;
     }
   }
   

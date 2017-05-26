@@ -15,8 +15,6 @@ public class BlitzPaint extends Application
   public static void main(String[] args)
   {
     Application.launch(BlitzPaint.class, args);
-//    javax.swing.JOptionPane.showConfirmDialog(null, "This is a test msg");
-//    System.exit(0);
   }
 
   @Override
@@ -40,9 +38,9 @@ public class BlitzPaint extends Application
     List<String> args = parameters.getUnnamed();
     if (args.size()==0) { return; }
     if (!new File(args.get(0)).isFile()) { return; }
-    if (args.get(0).endsWith(".png")) { frame.loadSaveDirect(false, args.get(0)); }
-    if (args.get(0).endsWith(".jpg")) { frame.loadSaveDirect(false, args.get(0)); }
-    if (args.get(0).endsWith(".bmp")) { frame.loadSaveDirect(false, args.get(0)); }
+    if (args.get(0).endsWith(".png")) { frame.loadSaveFileDirect(false, args.get(0)); }
+    if (args.get(0).endsWith(".jpg")) { frame.loadSaveFileDirect(false, args.get(0)); }
+    if (args.get(0).endsWith(".bmp")) { frame.loadSaveFileDirect(false, args.get(0)); }
   }
 
 }

@@ -1,5 +1,7 @@
 package starcom.paint;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.io.File;
 import java.util.HashMap;
 
@@ -10,19 +12,18 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 
 public class BlitzPaintFrame
@@ -30,40 +31,40 @@ public class BlitzPaintFrame
   @FXML private Pane pane;
   @FXML private ScrollPane scrollPane;
   @FXML private Button settingsButton;
+  @FXML private Button arrowTool;
+  private Node lastSelectedToolButton;
   private ClipboardTool clipTool = new ClipboardTool();
-  private Background settingsButtonBG;
   HashMap<String,ITool> tools = new HashMap<String,ITool>();
   boolean isDrag = false;
   ITool currentTool;
 
   @FXML public void initialize()
   {
-//    Blend blend = new Blend();
-//    blend.setMode(BlendMode.COLOR_BURN);
     pane.setOnDragDetected(createDrag(EventType.DRAG));
     pane.setOnMousePressed(createDrag(EventType.CLICK));
     pane.setOnMouseReleased(createDrag(EventType.RELEASE));
     pane.setOnMouseDragged(createDrag(EventType.MOVE));
     pane.setStyle("-fx-border-color: black");
-    Image contentPix = clipTool.getImageFromClipboard();
-    if (contentPix==null) { contentPix = new Image("starcom/paint/BlitzPaintArrow.png"); }
-    pane.getChildren().add(createImageView(contentPix));
+    loadSaveClip(false);
     selectTool("ArrowTool");
+    lastSelectedToolButton = arrowTool;
+    changeButtonActive(arrowTool, true);
+    clipChildren();
   }
   
-//  void initializeTmp()
-//  {
-//    Blend blend = new Blend();
-//    blend.setMode(BlendMode.COLOR_BURN);
-//    ImageView iv = createImageView("starcom/paint/BlitzPaintBG.png");
-//    iv.setOnDragDetected(createDrag(EventType.DRAG));
-//    iv.setOnMousePressed(createDrag(EventType.CLICK));
-//    iv.setOnMouseReleased(createDrag(EventType.RELEASE));
-//    iv.setOnMouseDragged(createDrag(EventType.MOVE));
-//    iv.setStyle("-fx-border-color: black");
-//    pane.getChildren().add(iv);
-//    selectTool("ArrowTool");
-//  }
+  private void clipChildren()
+  {
+    int arc = 3;
+    final Rectangle outputClip = new Rectangle();
+    outputClip.setArcWidth(arc);
+    outputClip.setArcHeight(arc);
+    pane.setClip(outputClip);
+    pane.layoutBoundsProperty().addListener((ov, oldValue, newValue) ->
+    {
+      outputClip.setWidth(newValue.getWidth());
+      outputClip.setHeight(newValue.getHeight());
+    });
+  }
   
   private EventHandler<? super MouseEvent> createDrag(final EventType evType)
   {
@@ -84,10 +85,15 @@ public class BlitzPaintFrame
     if (source instanceof Node)
     {
       Node sourceN = (Node) source;
-      currentTool = tools.get(sourceN.getId());
+      changeButtonActive(lastSelectedToolButton, false);
+      lastSelectedToolButton = sourceN;
+      changeButtonActive(lastSelectedToolButton, true);
+      String id = sourceN.getId();
+      id = id.substring(0,1).toUpperCase() + id.substring(1);
+      currentTool = tools.get(id);
       if (currentTool == null)
       {
-        selectTool(sourceN.getId());
+        selectTool(id);
       }
       System.out.println("Tool selected: " + sourceN.getId());
     }
@@ -103,13 +109,13 @@ public class BlitzPaintFrame
     if (source instanceof Node)
     {
       Node sourceN = (Node) source;
-      if (sourceN.getId().equals("SaveBut"))
+      if (sourceN.getId().equals("saveBut"))
       {
-        loadSave(true);
+        loadSave(sourceN, true);
       }
-      else if (sourceN.getId().equals("LoadBut"))
+      else if (sourceN.getId().equals("loadBut"))
       {
-        loadSave(false);
+        loadSave(sourceN, false);
       }
     }
     else
@@ -118,7 +124,47 @@ public class BlitzPaintFrame
     }
   }
   
-  void loadSave(boolean do_save)
+  void loadSave(Node sourceN, boolean do_save)
+  {
+    ContextMenu contextMenu = new ContextMenu();
+    if (do_save)
+    {
+      MenuItem m_clip = new MenuItem("To Clip");
+      MenuItem m_file = new MenuItem("To File");
+      m_file.setOnAction((event) -> loadSaveFile(true));
+      m_clip.setOnAction((event) -> loadSaveClip(true));
+      contextMenu.getItems().addAll(m_clip, m_file);
+    }
+    else
+    {
+      MenuItem m_clip = new MenuItem("From Clip");
+      MenuItem m_file = new MenuItem("From File");
+      m_file.setOnAction((event) -> loadSaveFile(false));
+      m_clip.setOnAction((event) -> loadSaveClip(false));
+      contextMenu.getItems().addAll(m_clip, m_file);
+    }
+    Point pos = MouseInfo.getPointerInfo().getLocation();
+    contextMenu.show(sourceN, pos.x, pos.y);
+  }
+  
+  void loadSaveClip(boolean do_save)
+  {
+    if (do_save)
+    {
+      WritableImage image = new WritableImage((int)pane.getWidth(), (int)pane.getHeight());
+      pane.snapshot(null, image);
+      clipTool.putImageToClipboard(image);
+    }
+    else
+    {
+      Image contentPix = clipTool.getImageFromClipboard();
+      if (contentPix==null) { contentPix = new WritableImage(400,200); }
+      pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
+      pane.getChildren().add(createImageView(contentPix));
+    }
+  }
+  
+  void loadSaveFile(boolean do_save)
   {
     FileChooser fileChooser = new FileChooser();
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.bmp");
@@ -128,19 +174,21 @@ public class BlitzPaintFrame
     File file = null;
     if (do_save)
     {
+      fileChooser.setTitle("Save to file");
       file = fileChooser.showSaveDialog(null);
     }
     else
     {
+      fileChooser.setTitle("Load from file");
       file = fileChooser.showOpenDialog(null);
     }
     if(file != null)
     {
-      loadSaveDirect(do_save, file.getPath());
+      loadSaveFileDirect(do_save, file.getPath());
     }
   }
   
-  void loadSaveDirect(boolean do_save, String file)
+  void loadSaveFileDirect(boolean do_save, String file)
   {
     if (do_save)
     {
@@ -151,6 +199,7 @@ public class BlitzPaintFrame
     else
     {
       Image contentPix = new Image("file:" + file);
+      pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
       pane.getChildren().clear();
       pane.getChildren().add(createImageView(contentPix));
     }
@@ -158,24 +207,26 @@ public class BlitzPaintFrame
 
   @FXML void selectSet(ActionEvent event)
   {
-    System.out.println("Select settings now: " + currentTool.toString());
-   // settingsButton.setBackground(Background.)
-    
+    System.out.println("Selected settings for: " + currentTool.toString());
     Color color = (Color)settingsButton.getBackground().getFills().get(0).getFill();
-    if (color != Color.YELLOWGREEN)
+    changeButtonActive(settingsButton, color != Color.YELLOWGREEN);
+  }
+  
+  void changeButtonActive(Node button, boolean b_active)
+  {
+    if (b_active)
     {
-      settingsButtonBG = settingsButton.getBackground();
-      settingsButton.setBackground(new Background(new BackgroundFill(
-                Color.YELLOWGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+      button.setStyle("-fx-background-color: yellowgreen");
     }
     else
     {
-      settingsButton.setBackground(settingsButtonBG);
+      button.setStyle(null);
     }
   }
   
   private void selectTool(String id)
   {
+    System.out.println("Selected tool: " + id);
     String toolClass = ITool.class.getPackage().getName() + "." + id;
     try
     {
