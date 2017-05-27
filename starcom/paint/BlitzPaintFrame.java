@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
@@ -172,13 +174,26 @@ public class BlitzPaintFrame
     else // Settings
     {
       MenuItem m_color = new MenuItem("Set color");
+      MenuItem m_about = new MenuItem("About");
       m_color.setOnAction((event) -> selectColor(sourceN));
-      contextMenu.getItems().add(m_color);
+      m_about.setOnAction((event) -> showAbout(sourceN));
+      contextMenu.getItems().addAll(m_color, m_about);
     }
     Point pos = MouseInfo.getPointerInfo().getLocation();
     contextMenu.show(sourceN, pos.x, pos.y);
   }
   
+  private void showAbout(Node sourceN)
+  {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    StringBuilder sb = new StringBuilder();
+    sb.append("This software is released under the GPLv3.\n\n");
+    sb.append("Author: Paul Kashofer Austria\n");
+    sb.append("Web: https://github.com/Starcommander/JBlitzPaint");
+    alert.setContentText(sb.toString());
+    alert.show();
+  }
+
   private void selectColor(Node sourceN)
   {
     Popup win = new Popup();
