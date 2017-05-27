@@ -33,7 +33,7 @@
 	    <graphic>
 	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
-	          <Image url="starcom/paint/icons/network_wired.png" />
+	          <Image url="starcom/paint/icons/frame.png" />
 	        </image>
 	      </ImageView>
 	    </graphic>
