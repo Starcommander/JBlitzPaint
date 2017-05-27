@@ -12,5 +12,8 @@ Features:
 
 Quickstart:
 - Start the jar file from bin folder.
-- On Commandline: java -jar JBlitzPaint
+- On Commandline: java -jar JBlitzPaint.jar
 - Or right-mouse-click: open with java.
+
+Dependencies:
+- Needs java-version 8 to start.
