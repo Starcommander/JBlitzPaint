@@ -18,13 +18,10 @@
     styleClass="root">
 
       <padding><Insets top="10" right="25" bottom="25" left="25"/></padding>
-    
-      <Label text="MAP DATA"
-        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 
       <Button fx:id="arrowTool" GridPane.columnIndex="0" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
-	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
 	          <Image url="starcom/paint/icons/go_up.png" />
 	        </image>
@@ -34,7 +31,7 @@
 	  
 	  <Button fx:id="frameTool" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
-	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
 	          <Image url="starcom/paint/icons/network_wired.png" />
 	        </image>
@@ -44,7 +41,7 @@
 	  
 	  <Button fx:id="txtTool" GridPane.columnIndex="2" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
-	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
 	          <Image url="starcom/paint/icons/preferences_desktop_font.png" />
 	        </image>
@@ -52,9 +49,18 @@
 	    </graphic>
 	  </Button>
 	  
-	  <Button fx:id="settingsButton" GridPane.columnIndex="5" GridPane.rowIndex="0" onAction="#selectSet">
+	  <Button fx:id="editTool" GridPane.columnIndex="3" GridPane.rowIndex="0" onAction="#selectTool">
 	    <graphic>
-	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+	        <image>
+	          <Image url="starcom/paint/icons/edit_undo.png" />
+	        </image>
+	      </ImageView>
+	    </graphic>
+	  </Button>
+	  <Button fx:id="settingsButton" GridPane.columnIndex="5" GridPane.rowIndex="0" onAction="#selectAction">
+	    <graphic>
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
 	          <Image url="starcom/paint/icons/preferences_system.png" />
 	        </image>
@@ -64,7 +70,7 @@
 	  
 	  <Button fx:id="loadBut" GridPane.columnIndex="6" GridPane.rowIndex="0" onAction="#selectAction">
 	    <graphic>
-	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
 	          <Image url="starcom/paint/icons/document_open.png" />
 	        </image>
@@ -74,7 +80,7 @@
 	  
 	  <Button fx:id="saveBut" GridPane.columnIndex="7" GridPane.rowIndex="0" onAction="#selectAction">
 	    <graphic>
-	      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+	      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 	        <image>
 	          <Image url="starcom/paint/icons/document_save.png" />
 	        </image>

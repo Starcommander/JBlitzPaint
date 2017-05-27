@@ -1,9 +1,15 @@
 package starcom.paint.tools;
 
+import java.util.ArrayList;
+
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
+import starcom.paint.BlitzPaintFrame;
+import starcom.paint.PaintObject;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
@@ -20,7 +26,7 @@ public class ArrowTool implements ITool
   void makeShape()
   {
     line = new Line();
-    line.setStroke(Color.RED);
+    line.setStroke(BlitzPaintFrame.color);
     line.setStrokeWidth(line_thick);
     line.setStrokeLineCap(StrokeLineCap.BUTT);
     line.setOpacity(opacity);
@@ -31,8 +37,8 @@ public class ArrowTool implements ITool
         0.0, 0.0,
         0.0 - line_thick, 0.0 - tail_len,
         0.0 + line_thick, 0.0 - tail_len });
-    polygon.setStroke(Color.RED.darker());
-    polygon.setFill(Color.RED);
+    polygon.setStroke(BlitzPaintFrame.color.darker());
+    polygon.setFill(BlitzPaintFrame.color);
     polygon.setOpacity(opacity);
     pane.getChildren().add(polygon);
   }
@@ -52,23 +58,87 @@ public class ArrowTool implements ITool
       if (line==null) { break EventHandle; }
       double posX = event.getX();
       double posY = event.getY();
-      update(line.getStartX(),line.getStartY(),posX,posY);
+      update(line, polygon, line.getStartX(),line.getStartY(),posX,posY);
     }
     else if (evType == EventType.CLICK)
     {
       makeShape();
       double posX = event.getX();
       double posY = event.getY();
-      update(posX,posY,posX,posY);
+      update(line, polygon, posX,posY,posX,posY);
     }
     else if (evType == EventType.RELEASE)
     {
+      createPaintObject(line, polygon);
       line = null;
       polygon = null;
     }
   }
 
-  private void update(double x1, double y1, double x2, double y2)
+  private void createPaintObject(Line line2, Polygon polygon2)
+  {
+    new PaintObject(line, polygon)
+    {
+      @Override
+      public void moveGizmo(Node gizmo, double posX, double posY)
+      {
+        String s_giz = gizmo.getUserData().toString();
+        Line line = (Line)getNodeList().get(0);
+        Polygon polygon = (Polygon)getNodeList().get(1);
+        if (s_giz.equals(GIZMO_START))
+        {
+          update(line, polygon, posX, posY, polygon.getTranslateX(), polygon.getTranslateY());
+        }
+        else if (s_giz.equals(GIZMO_END))
+        {
+          update(line, polygon, line.getStartX(), line.getStartY(), posX, posY);
+        }
+        if (s_giz.equals(GIZMO_CENTER))
+        {
+          double cx = line.getStartX() - line.getEndX();
+          double cy = line.getStartY() - line.getEndY();
+          cx = line.getEndX() + (cx/2.0);
+          cy = line.getEndY() + (cy/2.0);
+          double movX = posX -cx;
+          double movY = posY -cy;
+          double ex = polygon.getTranslateX() + movX;
+          double ey = polygon.getTranslateY() + movY;
+          update(line, polygon, line.getStartX() + movX, line.getStartY() + movY, ex, ey);
+        }
+      }
+      
+      @Override
+      public void appendGizmos(ArrayList<Node> gizmoList)
+      {
+        gizmoList.add(PaintObject.createGizmoCircle(GIZMO_START));
+        gizmoList.add(PaintObject.createGizmoCircle(GIZMO_END));
+        gizmoList.add(PaintObject.createGizmoCircle(GIZMO_CENTER));
+      }
+
+      @Override
+      public void updateGizmoPositions(ArrayList<Node> gizmoList)
+      {
+        Line l = (Line)getNodeList().get(0);
+        double ex = l.getEndX();
+        double ey = l.getEndY();
+        double sx = l.getStartX();
+        double sy = l.getStartY();
+        double lx = (ex -sx) / 2.0;
+        double ly = (ey -sy) / 2.0;
+        Circle gizmo = (Circle)gizmoList.get(0);
+        gizmo.setCenterX(sx);
+        gizmo.setCenterY(sy);
+        gizmo = (Circle)gizmoList.get(1);
+        gizmo.setCenterX(ex);
+        gizmo.setCenterY(ey);
+        gizmo = (Circle)gizmoList.get(2);
+        gizmo.setCenterX(sx + lx);
+        gizmo.setCenterY(sy + ly);
+      }
+    };
+  }
+
+  private static void update(Line line, Polygon polygon, double x1, double y1, double x2, double y2)
   {
     /* Line start end. */
     line.setStartX(x1);
