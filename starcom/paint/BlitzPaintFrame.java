@@ -3,29 +3,33 @@ package starcom.paint;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import starcom.paint.tools.ITool;
 import starcom.paint.tools.ITool.EventType;
 import starcom.system.ClipboardTool;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -35,13 +39,17 @@ import javafx.stage.Popup;
 public class BlitzPaintFrame
 {
   enum MenuType {Load, Save, Settings};
+  enum ToolBarType {Canvas, Paint};
   public static Color color = Color.RED;
   @FXML private Pane pane;
   @FXML private ScrollPane scrollPane;
   @FXML private Button settingsButton;
   @FXML private Button arrowTool;
+  @FXML private GridPane toolbar_paint;
+  @FXML private GridPane toolbar_canvas;
   private ContextMenu contextMenu;
   private Node lastSelectedToolButton;
+  ArrayList<CheckMenuItem> toolBarList;
   private ClipboardTool clipTool = new ClipboardTool();
   HashMap<String,ITool> tools = new HashMap<String,ITool>();
   boolean isDrag = false;
@@ -49,13 +57,16 @@ public class BlitzPaintFrame
 
   @FXML public void initialize()
   {
-    pane.setOnDragDetected(createDrag(EventType.DRAG));
-    pane.setOnMousePressed(createDrag(EventType.CLICK));
-    pane.setOnMouseReleased(createDrag(EventType.RELEASE));
-    pane.setOnMouseDragged(createDrag(EventType.MOVE));
+    toolbar_paint.managedProperty().bind(toolbar_paint.visibleProperty());
+    toolbar_canvas.managedProperty().bind(toolbar_canvas.visibleProperty());
+    toolbar_canvas.setVisible(false);
+    pane.setOnDragDetected((ev) -> currentTool.handle(EventType.DRAG, ev));
+    pane.setOnMousePressed((ev) -> currentTool.handle(EventType.CLICK, ev));
+    pane.setOnMouseReleased((ev) -> currentTool.handle(EventType.RELEASE, ev));
+    pane.setOnMouseDragged((ev) -> currentTool.handle(EventType.MOVE, ev));
     scrollPane.setOnKeyPressed((ev) -> onKey(ev));
     pane.setStyle("-fx-border-color: black");
-    loadSaveClip(false, false);
+    openEmptyPix(pane, 400, 200);
     selectTool("ArrowTool");
     lastSelectedToolButton = arrowTool;
     changeButtonActive(arrowTool, true);
@@ -82,19 +93,6 @@ public class BlitzPaintFrame
       outputClip.setWidth(newValue.getWidth());
       outputClip.setHeight(newValue.getHeight());
     });
-  }
-  
-  private EventHandler<? super MouseEvent> createDrag(final EventType evType)
-  {
-    EventHandler<MouseEvent> ev = new EventHandler<MouseEvent>()
-    {
-      @Override
-      public void handle(MouseEvent event)
-      {
-        currentTool.handle(evType, event);
-      }
-    };
-    return ev;
   }
   
   @FXML void selectTool(ActionEvent event)
@@ -160,7 +158,7 @@ public class BlitzPaintFrame
       MenuItem m_clip = new MenuItem("To Clip");
       MenuItem m_file = new MenuItem("To File");
       m_file.setOnAction((event) -> loadSaveFile(true));
-      m_clip.setOnAction((event) -> loadSaveClip(true, true));
+      m_clip.setOnAction((event) -> loadSaveClip(true));
       contextMenu.getItems().addAll(m_clip, m_file);
     }
     else if (type == MenuType.Load)
@@ -168,21 +166,57 @@ public class BlitzPaintFrame
       MenuItem m_clip = new MenuItem("From Clip");
       MenuItem m_file = new MenuItem("From File");
       m_file.setOnAction((event) -> loadSaveFile(false));
-      m_clip.setOnAction((event) -> loadSaveClip(false, true));
+      m_clip.setOnAction((event) -> loadSaveClip(false));
       contextMenu.getItems().addAll(m_clip, m_file);
     }
     else // Settings
     {
+      initToolbarList();
+      SeparatorMenuItem sep1 = new SeparatorMenuItem();
+      SeparatorMenuItem sep2 = new SeparatorMenuItem();
       MenuItem m_color = new MenuItem("Set color");
+      CheckMenuItem toolBar_paint = toolBarList.get(0);
+      CheckMenuItem toolBar_canvas =  toolBarList.get(1);
       MenuItem m_about = new MenuItem("About");
       m_color.setOnAction((event) -> selectColor(sourceN));
       m_about.setOnAction((event) -> showAbout(sourceN));
-      contextMenu.getItems().addAll(m_color, m_about);
+      contextMenu.getItems().addAll(m_color, sep1, toolBar_paint, toolBar_canvas, sep2, m_about);
     }
     Point pos = MouseInfo.getPointerInfo().getLocation();
     contextMenu.show(sourceN, pos.x, pos.y);
   }
-  
+
+  private void initToolbarList()
+  {
+    if (toolBarList == null)
+    {
+      toolBarList = new ArrayList<CheckMenuItem>();
+      CheckMenuItem toolBar_paint = new CheckMenuItem("ToolBar: Paint");
+      toolBar_paint.setSelected(true);
+      toolBar_paint.setOnAction((event) -> selectToolbar(toolBar_paint, toolBarList, ToolBarType.Paint));
+      CheckMenuItem toolBar_canvas = new CheckMenuItem("ToolBar: Canvas");
+      toolBar_canvas.setOnAction((event) -> selectToolbar(toolBar_canvas, toolBarList, ToolBarType.Canvas));
+      toolBarList.add(toolBar_paint);
+      toolBarList.add(toolBar_canvas);
+    }
+  }
+
+  private void selectToolbar(CheckMenuItem toolBar, ArrayList<CheckMenuItem> toolBarList, ToolBarType type)
+  {
+    for (CheckMenuItem curItem : toolBarList) { curItem.setSelected(false); }
+    toolBar.setSelected(true);
+    if (type == ToolBarType.Paint)
+    {
+      toolbar_paint.setVisible(true);
+      toolbar_canvas.setVisible(false);
+    }
+    else
+    {
+      toolbar_paint.setVisible(false);
+      toolbar_canvas.setVisible(true);
+    }
+  }
+
   private void showAbout(Node sourceN)
   {
     Alert alert = new Alert(AlertType.INFORMATION);
@@ -205,11 +239,10 @@ public class BlitzPaintFrame
     win.show(sourceN, pos.x, pos.y);
   }
 
-  void loadSaveClip(boolean do_save, boolean use_clip)
+  void loadSaveClip(boolean do_save)
   {
     if (do_save)
     {
-      if (!use_clip) { return; }
       WritableImage image = new WritableImage((int)pane.getWidth(), (int)pane.getHeight());
       pane.snapshot(null, image);
       clipTool.putImageToClipboard(image);
@@ -217,12 +250,31 @@ public class BlitzPaintFrame
     else
     {
       PaintObject.clearAllObjects(pane);
-      Image contentPix = null;
-      if (use_clip) { contentPix = clipTool.getImageFromClipboard(); }
-      if (contentPix==null) { contentPix = new WritableImage(400,200); }
-      pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
-      pane.getChildren().add(createImageView(contentPix));
+      pane.setCursor(Cursor.WAIT);
+      Thread thread = new Thread(() ->
+      {
+        Image contentPix = null;
+        contentPix = clipTool.getImageFromClipboard();
+        if (contentPix==null) { contentPix = new WritableImage(400,200); }
+        final Image contentPixFinal = contentPix;
+        Platform.runLater(() ->
+        {
+          pane.setCursor(Cursor.DEFAULT);
+          pane.setMaxSize(contentPixFinal.getWidth(), contentPixFinal.getHeight());
+          pane.getChildren().add(createImageView(contentPixFinal));
+        });
+      });
+      thread.start();
     }
+  }
+  
+  public static void openEmptyPix(Pane pane, int sizeX, int sizeY)
+  {
+    PaintObject.clearAllObjects(pane);
+    WritableImage contentPix = new WritableImage(sizeX, sizeY);
+    pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
+    pane.getChildren().clear();
+    pane.getChildren().add(createImageView(contentPix));
   }
   
   void loadSaveFile(boolean do_save)
@@ -292,7 +344,7 @@ public class BlitzPaintFrame
     tools.put(id, currentTool);
   }
 
-  private ImageView createImageView(Image image)
+  public static ImageView createImageView(Image image)
   {
     ImageView iv = new ImageView();
     iv.setImage(image);

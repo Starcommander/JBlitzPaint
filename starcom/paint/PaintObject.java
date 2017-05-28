@@ -126,6 +126,8 @@ public abstract class PaintObject
     b_gizmoActive = active;
   }
   
+  public boolean isGizmoActive() { return b_gizmoActive; }
+  
   public void updateGizmoPositions() { updateGizmoPositions(gizmoList); }
   
   public abstract void moveGizmo(Node gizmo, double posX, double posY);
@@ -134,4 +136,10 @@ public abstract class PaintObject
   public abstract void appendGizmos(ArrayList<Node> gizmoList);
   
   public abstract void updateGizmoPositions(ArrayList<Node> gizmoList);
+
+  /** Adds all current gizmos into tmp gizmoList. **/
+  public void appendGizmoList(ArrayList<Node> tmpGizmoList)
+  {
+    tmpGizmoList.addAll(gizmoList);
+  }
 }

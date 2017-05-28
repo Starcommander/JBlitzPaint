@@ -8,7 +8,8 @@ Features:
 - Copy to clipboard, or open from.
 - Open from and save to file.
 - Select and modify or delete objects.
-- Color picker
+- Color picker.
+- Resize and Crop Frame.
 
 Quickstart:
 - Start the jar file from bin folder.

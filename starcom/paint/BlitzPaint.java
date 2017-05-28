@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class BlitzPaint extends Application
@@ -30,6 +31,7 @@ public class BlitzPaint extends Application
     handleArgs(getParameters(), frame);
     stage.setTitle("### JBlitzPaint ###");
     stage.setScene(new Scene(root, 500, 400));
+    stage.getIcons().add(new Image(getClass().getResourceAsStream("icons/video_display.png")));
     stage.show();
   }
 
