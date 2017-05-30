@@ -8,4 +8,5 @@ public interface ITool
   enum EventType {CLICK, RELEASE, DRAG, MOVE};
   public void init(Pane pane);
   public void handle(EventType type, MouseEvent event);
+  public void onSelected();
 }

@@ -5,22 +5,24 @@ import java.util.ArrayList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import starcom.paint.BlitzPaint;
 import starcom.paint.BlitzPaintFrame;
 import starcom.paint.PaintObject;
 
 public class CropTool extends CropToolAbstract
 {
   @Override
-  void onActivateGizmo(PaintObject headlessPaintObject)
+  void doActivateGizmo(PaintObject headlessPaintObject)
   {
     headlessPaintObject.setGizmoActive(pane, true);
   }
 
   @Override
-  void onUpdateGizmoInitPositions(ArrayList<Node> gizmoList)
+  void doUpdateGizmoInitPositions(ArrayList<Node> gizmoList)
   {
     double width4 = pane.getWidth() * 0.25;
     double height4 = pane.getHeight() * 0.25;
@@ -48,14 +50,24 @@ public class CropTool extends CropToolAbstract
   @Override
   void updateFinish(double x, double y, double w, double h)
   {
+    Node curView = pane;
+    if (BlitzPaint.fullShot!=null)
+    {
+      double ratioX = BlitzPaint.fullShot.getWidth() / pane.getWidth();
+      double ratioY = BlitzPaint.fullShot.getHeight() / pane.getHeight();
+      x = x * ratioX;
+      y = y * ratioY;
+      w = w * ratioX;
+      h = h * ratioY;
+      curView = new ImageView(BlitzPaint.fullShot);
+      BlitzPaint.fullShot = null;
+    }
     headlessPaintObject.setGizmoActive(pane, false);
     SnapshotParameters p = new SnapshotParameters();
-    p.setViewport(new Rectangle2D(x + pane.getLayoutX(), y + pane.getLayoutY(), w, h));
+    p.setViewport(new Rectangle2D(x + curView.getLayoutX(), y + curView.getLayoutY(), w, h));
     WritableImage contentPix = new WritableImage((int)w, (int)h);
-    pane.snapshot(p, contentPix);
-    pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
-    pane.getChildren().clear();
-    pane.getChildren().add(BlitzPaintFrame.createImageView(contentPix));
+    curView.snapshot(p, contentPix);
+    BlitzPaintFrame.openPix(pane, contentPix);
   }
 
   @Override
@@ -72,6 +84,12 @@ public class CropTool extends CropToolAbstract
     gizmoList.add(PaintObject.createGizmoCircle(GIZMO_C));
     gizmoList.add(PaintObject.createGizmoCircle(GIZMO_NW));
     gizmoList.add(PaintObject.createGizmoCircle(GIZMO_SO));
+  }
+
+  @Override
+  public void onSelected()
+  {
+    headlessPaintObject.setGizmoActive(pane, true);
   }
   
 }

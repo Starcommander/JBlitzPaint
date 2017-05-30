@@ -136,4 +136,9 @@ public class FrameTool implements ITool
     if (h<20) { h = 20; }
     r.setHeight(h);
   }
+
+  @Override
+  public void onSelected()
+  {
+  }
 }

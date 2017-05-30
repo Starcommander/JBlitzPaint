@@ -16,5 +16,9 @@ Quickstart:
 - On Commandline: java -jar JBlitzPaint.jar
 - Or right-mouse-click: open with java.
 
+Arguments:
+- To take Screenshot directly: java -jar JBlitzPaint.jar -screenshot
+- To open file directly: java -jar JBlitzPaint file.png
+
 Dependencies:
 - Needs java-version 8 to start.

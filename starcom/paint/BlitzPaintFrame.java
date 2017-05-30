@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import starcom.paint.tools.ITool;
 import starcom.paint.tools.ITool.EventType;
+import starcom.paint.tools.SizeTool;
 import starcom.system.ClipboardTool;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
@@ -40,11 +41,14 @@ public class BlitzPaintFrame
 {
   enum MenuType {Load, Save, Settings};
   enum ToolBarType {Canvas, Paint};
+  public static String ARROW_TOOL = "ArrowTool";
+  public static String CROP_TOOL = "CropTool";
   public static Color color = Color.RED;
   @FXML private Pane pane;
   @FXML private ScrollPane scrollPane;
   @FXML private Button settingsButton;
   @FXML private Button arrowTool;
+  @FXML private Button cropTool;
   @FXML private GridPane toolbar_paint;
   @FXML private GridPane toolbar_canvas;
   private ContextMenu contextMenu;
@@ -66,11 +70,33 @@ public class BlitzPaintFrame
     pane.setOnMouseDragged((ev) -> currentTool.handle(EventType.MOVE, ev));
     scrollPane.setOnKeyPressed((ev) -> onKey(ev));
     pane.setStyle("-fx-border-color: black");
-    openEmptyPix(pane, 400, 200);
-    selectTool("ArrowTool");
-    lastSelectedToolButton = arrowTool;
-    changeButtonActive(arrowTool, true);
+  }
+  
+  public void onShowPre()
+  {
+    if (BlitzPaint.fullShot==null)
+    {
+      openEmptyPix(pane, 400, 200);
+      selectTool(ARROW_TOOL);
+      lastSelectedToolButton = arrowTool;
+      changeButtonActive(arrowTool, true);
+    }
+    else
+    {
+      Image pix = SizeTool.getScaledInstance(BlitzPaint.fullShot, 400, 0, true);
+      openPix(pane, pix);
+    }
     clipChildren();
+  }
+  
+  public void onShowPost()
+  {
+    if (BlitzPaint.fullShot!=null)
+    {
+      selectTool(CROP_TOOL);
+      lastSelectedToolButton = cropTool;
+      changeButtonActive(cropTool, true);
+    }
   }
   
   private void onKey(KeyEvent ev)
@@ -107,11 +133,7 @@ public class BlitzPaintFrame
       changeButtonActive(lastSelectedToolButton, true);
       String id = sourceN.getId();
       id = id.substring(0,1).toUpperCase() + id.substring(1);
-      currentTool = tools.get(id);
-      if (currentTool == null)
-      {
-        selectTool(id);
-      }
+      selectTool(id);
       System.out.println("Tool selected: " + sourceN.getId());
     }
     else
@@ -260,21 +282,25 @@ public class BlitzPaintFrame
         Platform.runLater(() ->
         {
           pane.setCursor(Cursor.DEFAULT);
-          pane.setMaxSize(contentPixFinal.getWidth(), contentPixFinal.getHeight());
-          pane.getChildren().add(createImageView(contentPixFinal));
+          openPix(pane, contentPixFinal);
         });
       });
       thread.start();
     }
   }
   
+  public static void openPix(Pane pane, Image pix)
+  {
+    pane.getChildren().clear();
+    pane.setMaxSize(pix.getWidth(), pix.getHeight());
+    pane.getChildren().add(createImageView(pix));
+  }
+  
   public static void openEmptyPix(Pane pane, int sizeX, int sizeY)
   {
     PaintObject.clearAllObjects(pane);
     WritableImage contentPix = new WritableImage(sizeX, sizeY);
-    pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
-    pane.getChildren().clear();
-    pane.getChildren().add(createImageView(contentPix));
+    openPix(pane, contentPix);
   }
   
   void loadSaveFile(boolean do_save)
@@ -313,9 +339,7 @@ public class BlitzPaintFrame
     {
       PaintObject.clearAllObjects(pane);
       Image contentPix = new Image("file:" + file);
-      pane.setMaxSize(contentPix.getWidth(), contentPix.getHeight());
-      pane.getChildren().clear();
-      pane.getChildren().add(createImageView(contentPix));
+      openPix(pane, contentPix);
     }
   }
   
@@ -334,6 +358,12 @@ public class BlitzPaintFrame
   private void selectTool(String id)
   {
     System.out.println("Selected tool: " + id);
+    currentTool = tools.get(id);
+    if (currentTool != null)
+    {
+      currentTool.onSelected();
+      return;
+    }
     String toolClass = ITool.class.getPackage().getName() + "." + id;
     try
     {
@@ -341,6 +371,7 @@ public class BlitzPaintFrame
     }
     catch (Exception e) { throw new IllegalArgumentException(e); }
     currentTool.init(pane);
+    currentTool.onSelected();
     tools.put(id, currentTool);
   }
 

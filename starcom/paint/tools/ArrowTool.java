@@ -166,4 +166,9 @@ public class ArrowTool implements ITool
     line.setEndX(line.getEndX() - a);
     line.setEndY(line.getEndY() - b);
   }
+
+  @Override
+  public void onSelected()
+  {
+  }
 }

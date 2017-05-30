@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
@@ -24,7 +26,7 @@ public class SizeTool extends CropToolAbstract
   Popup win;
   
   @Override
-  void onActivateGizmo(PaintObject headlessPaintObject)
+  void doActivateGizmo(PaintObject headlessPaintObject)
   {
     showSelectFrame(pane);
   }
@@ -38,31 +40,54 @@ public class SizeTool extends CropToolAbstract
     TextField textY = new TextField();
     textX.setText("" + ((int)pane.getWidth()));
     textY.setText("" + ((int)pane.getHeight()));
+    CheckBox cbox = new CheckBox("Scale");
     Button okButton = new Button("OK");
     VBox box = new VBox();
     box.getChildren().add(textX);
     box.getChildren().add(textY);
+    box.getChildren().add(cbox);
     box.getChildren().add(okButton);
-    okButton.setOnAction((ev) -> setCanvasSize(textX.getText(), textY.getText(), win));
+    okButton.setOnAction((ev) -> setCanvasSize(textX.getText(), textY.getText(), cbox.isSelected(), win));
     win.getContent().add(box);
     Point pos = MouseInfo.getPointerInfo().getLocation();
     win.show(sourceN, pos.x, pos.y);
   }
 
-  private void setCanvasSize(String textX, String textY, Popup win)
+  private void setCanvasSize(String textX, String textY, boolean b_scale, Popup win)
   {
     win.hide();
     newSize.x = Integer.parseInt(textX);
     newSize.y = Integer.parseInt(textY);
     image = new WritableImage((int)pane.getWidth(), (int)pane.getHeight());
     pane.snapshot(null, image);
-    BlitzPaintFrame.openEmptyPix(pane, newSize.x, newSize.y);
-    headlessPaintObject.setGizmoActive(pane, true);
+    if (b_scale)
+    {
+      BlitzPaintFrame.openPix(pane, getScaledInstance(image, newSize.x, newSize.y, false));
+    }
+    else
+    {
+      if (newSize.x < pane.getWidth()) { newSize.x = (int)pane.getWidth(); }
+      if (newSize.y < pane.getHeight()) { newSize.y = (int)pane.getHeight(); }
+      BlitzPaintFrame.openEmptyPix(pane, newSize.x, newSize.y);
+      headlessPaintObject.setGizmoActive(pane, true);
+    }
   }
+  
+  public static Image getScaledInstance(Image source, int targetWidth, int targetHeight, boolean preserveRatio)
+  {
+    ImageView imageView = new ImageView(source);
+    imageView.setPreserveRatio(preserveRatio);
+    imageView.setFitWidth(targetWidth);
+    if (!preserveRatio)
+    {
+      imageView.setFitHeight(targetHeight);
+    }
+    return imageView.snapshot(null, null);
+}
 
 
   @Override
-  void onUpdateGizmoInitPositions(ArrayList<Node> gizmoList)
+  void doUpdateGizmoInitPositions(ArrayList<Node> gizmoList)
   {
     Rectangle r = (Rectangle)gizmoList.get(POS_BORDER_T);
     updateRect(r, 0.0, 0.0, newSize.x, 0.0);
@@ -99,6 +124,12 @@ public class SizeTool extends CropToolAbstract
   void appendGizmoCircles(ArrayList<Node> gizmoList)
   {
     gizmoList.add(PaintObject.createGizmoCircle(GIZMO_C));
+  }
+
+  @Override
+  public void onSelected()
+  {
+    showSelectFrame(pane);
   }
   
 }

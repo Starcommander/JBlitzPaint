@@ -88,18 +88,18 @@ public abstract class CropToolAbstract implements ITool
       }
       else
       {
-        onActivateGizmo(headlessPaintObject);
+        doActivateGizmo(headlessPaintObject);
       }
     }
   }
 
   abstract void appendGizmoCircles(ArrayList<Node> gizmoList);
   
-  abstract void onActivateGizmo(PaintObject headlessPaintObject);
+  abstract void doActivateGizmo(PaintObject headlessPaintObject);
   
   abstract void moveGizmos(ArrayList<Node> tmpGizmoList2, double x, double y, double w, double h);
   
-  abstract void onUpdateGizmoInitPositions(ArrayList<Node> gizmoList);
+  abstract void doUpdateGizmoInitPositions(ArrayList<Node> gizmoList);
   
   abstract void updateFinish(double x, double y, double w, double h);
   
@@ -194,7 +194,7 @@ public abstract class CropToolAbstract implements ITool
       @Override
       public void updateGizmoPositions(ArrayList<Node> gizmoList)
       {
-        onUpdateGizmoInitPositions(gizmoList);
+        doUpdateGizmoInitPositions(gizmoList);
       }
 
     };

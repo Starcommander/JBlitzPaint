@@ -1,9 +1,10 @@
 package starcom.paint.tools;
 
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import starcom.paint.PaintObject;
 
 public class EditTool implements ITool
@@ -35,43 +36,82 @@ public class EditTool implements ITool
     }
     else if (evType == EventType.CLICK)
     {
+      PaintObject oldObj = curObj;
       double posX = event.getX();
       double posY = event.getY();
-      curGizmo = null;
-      curObj = null;
-      PaintObject objOfNode = null;
-      for (Node child : pane.getChildren())
+      findCursorIntersection(posX, posY);
+      if (curObj != null && curGizmo == null)
       {
-        if (child instanceof ImageView) { continue; }
-        if (child.intersects(posX, posY, 1, 1))
-        {
-          System.out.println("Selected: " + child);
-          PaintObject obj = PaintObject.findObjectOfGizmo(child);
-          if (obj!=null)
-          {
-            curGizmo = child;
-            curObj = obj;
-            break;
-          }
-          obj = PaintObject.findObjectOf(child);
-          if (obj!=null)
-          {
-            objOfNode = obj;
-          }
-        }
+        curObj.setGizmoActive(pane, true);
       }
-      if (objOfNode != null && curGizmo == null)
+      else if (curObj != null)
       {
-        objOfNode.setGizmoActive(pane, true);
+      }
+      else if (oldObj != null)
+      {
+        oldObj.setGizmoActive(pane, false);
       }
     }
     else if (evType == EventType.RELEASE)
     {
-      if (curObj!=null)
+      if (curGizmo!=null)
       {
         curObj.updateGizmoPositions();
       }
     }
+  }
+  
+  /** Set curObj on intersection, and curGizmo on intersectionGizmo. **/
+  private void findCursorIntersection(double posX, double posY)
+  {
+    curGizmo = null;
+    curObj = null;
+    Circle mousePoint = new Circle(posX, posY, 1);
+    pane.getChildren().add(mousePoint);
+    for (Node child : pane.getChildren())
+    {
+      if (!(child instanceof Shape)) { continue; }
+      Shape s = Shape.intersect((Shape)child, mousePoint);
+      if (s.getBoundsInLocal().getWidth() != -1)
+      {
+        onIntersection(child);
+        if (curGizmo!=null) { break; }
+      }
+    }
+    pane.getChildren().remove(mousePoint);
+    if (curObj==null)
+    {
+      for (Node child : pane.getChildren())
+      {
+        if (!(child instanceof Shape)) { continue; }
+        if (child.intersects(posX, posY, 1, 1))
+        {
+          onIntersection(child);
+          if (curObj!=null) { break; }
+        }
+      }
+    }
+  }
+
+  private void onIntersection(Node child)
+  {
+    System.out.println("Selected: " + child);
+    PaintObject obj = PaintObject.findObjectOfGizmo(child);
+    if (obj!=null)
+    {
+      curGizmo = child;
+      curObj = obj;
+    }
+    obj = PaintObject.findObjectOf(child);
+    if (obj!=null)
+    {
+      curObj = obj;
+    }
+  }
+
+  @Override
+  public void onSelected()
+  {
   }
 
 }

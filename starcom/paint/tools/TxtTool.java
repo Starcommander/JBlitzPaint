@@ -19,7 +19,7 @@ import starcom.paint.PaintObject;
 public class TxtTool implements ITool
 {
   static int line_thick = 4;
-  static double opacity = 0.3;
+  static double opacity = 0.8;
   Pane pane;
   Rectangle r;
   Text t;
@@ -36,8 +36,8 @@ public class TxtTool implements ITool
     r.setArcHeight(5);
     r.setOpacity(opacity);
     r.setStrokeWidth(line_thick);
-    r.setFill(Color.GRAY);
-    r.setStroke(Color.BLACK);
+    r.setFill(BlitzPaintFrame.color.brighter());
+    r.setStroke(BlitzPaintFrame.color.darker());
     pane.getChildren().add(r);
   }
   
@@ -66,7 +66,7 @@ public class TxtTool implements ITool
     t.setText(s_txt);
     t.setFont(Font.font ("Verdana", 20));
     t.setEffect(ds);
-    t.setFill(BlitzPaintFrame.color);
+    t.setFill(Color.BLACK);
     pane.getChildren().add(t);
     s_txt = null;
   }
@@ -196,5 +196,11 @@ public class TxtTool implements ITool
     double w = (x2-x1) - 10;
     if (w<20) { w = 20; }
     t.setWrappingWidth(w);
+  }
+
+  @Override
+  public void onSelected()
+  {
+    askText();
   }
 }
