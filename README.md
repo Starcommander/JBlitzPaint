@@ -2,6 +2,7 @@
 Fast paint tool in javafx for simple marker jobs
 
 ![Screenshot](doc/Screenshot.png)
+![Screenshot](doc/Screenshot2.png)
 
 Features:
 - Create arrows, frames, and text-boxes.

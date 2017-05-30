@@ -187,9 +187,11 @@ public class BlitzPaintFrame
     {
       MenuItem m_clip = new MenuItem("From Clip");
       MenuItem m_file = new MenuItem("From File");
+      MenuItem m_empty = new MenuItem("Empty");
       m_file.setOnAction((event) -> loadSaveFile(false));
       m_clip.setOnAction((event) -> loadSaveClip(false));
-      contextMenu.getItems().addAll(m_clip, m_file);
+      m_empty.setOnAction((event) -> openEmptyPix(pane, 400, 200));
+      contextMenu.getItems().addAll(m_clip, m_file, m_empty);
     }
     else // Settings
     {
