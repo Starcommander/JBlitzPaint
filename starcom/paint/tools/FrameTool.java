@@ -141,4 +141,9 @@ public class FrameTool implements ITool
   public void onSelected()
   {
   }
+
+  @Override
+  public void onDeselected()
+  {
+  }
 }

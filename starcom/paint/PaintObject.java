@@ -51,15 +51,7 @@ public abstract class PaintObject
   
   public static void clearFocusObject(Pane pane)
   {
-    PaintObject paintObj = null;
-    for (PaintObject obj : paintObjects)
-    {
-      if (obj.b_gizmoActive)
-      {
-        paintObj = obj;
-        break;
-      }
-    }
+    PaintObject paintObj = getFocusObject();
     if (paintObj!=null)
     {
       paintObj.setGizmoActive(pane, false);
@@ -69,6 +61,18 @@ public abstract class PaintObject
       }
       paintObjects.remove(paintObj);
     }
+  }
+
+  public static PaintObject getFocusObject()
+  {
+    for (PaintObject obj : paintObjects)
+    {
+      if (obj.b_gizmoActive)
+      {
+        return obj;
+      }
+    }
+    return null;
   }
 
   public static void clearAllObjects(Pane pane)

@@ -171,4 +171,9 @@ public class ArrowTool implements ITool
   public void onSelected()
   {
   }
+
+  @Override
+  public void onDeselected()
+  {
+  }
 }

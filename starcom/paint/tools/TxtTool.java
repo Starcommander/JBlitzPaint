@@ -3,6 +3,7 @@ package starcom.paint.tools;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
@@ -24,6 +25,8 @@ public class TxtTool implements ITool
   Rectangle r;
   Text t;
   String s_txt;
+  Node curGizmo;
+  PaintObject curObj;
   
   void makeRect()
   {
@@ -41,17 +44,23 @@ public class TxtTool implements ITool
     pane.getChildren().add(r);
   }
   
-  void askText()
+  static String askText(String preText, Pane pane)
   {
-    TextInputDialog dialog = new TextInputDialog("This is a default text");
+    if (preText == null) { preText = "This is a default text"; }
+    TextInputDialog dialog = new TextInputDialog(preText);
     dialog.setTitle("Text");
     dialog.setHeaderText("Enter some Text!");
 
     Optional<String> result = dialog.showAndWait();
     if (result.isPresent())
     {
-      s_txt = result.get();
+      if (pane != null)
+      {
+        pane.setCursor(Cursor.CROSSHAIR);
+      }
+      return result.get();
     }
+    return null;
   }
   
   void makeText()
@@ -86,34 +95,103 @@ public class TxtTool implements ITool
   @Override
   public void handle(EventType evType, MouseEvent event)
   {
-    EventHandle:
     if (evType == EventType.MOVE)
     {
-      if (r==null) { break EventHandle; }
-      double posX = event.getX();
-      double posY = event.getY();
-      update(r, t, r.getX(),r.getY(),posX,posY);
+      if (curGizmo!=null)
+      {
+        double posX = event.getX();
+        double posY = event.getY();
+        curObj.moveGizmo(curGizmo, posX, posY);
+      }
+      else if (r!=null)
+      {
+        double posX = event.getX();
+        double posY = event.getY();
+        update(r, t, r.getX(),r.getY(),posX,posY);
+      }
     }
     else if (evType == EventType.CLICK)
     {
-      if (s_txt == null)
-      {
-        askText();
-        break EventHandle;
+      boolean wasGizmoNull = PaintObject.getFocusObject()==null;
+      curObj = null;
+      curGizmo = null;
+      
+      if (s_txt!=null)
+      { // New Shape
+        makeShape();
+        double posX = event.getX();
+        double posY = event.getY();
+        update(r, t, posX,posY,posX,posY);
       }
-      makeShape();
-      double posX = event.getX();
-      double posY = event.getY();
-      update(r, t, posX,posY,posX,posY);
+      else if (reText(event))
+      { // Re-Text or Gizmo-Edit
+        if (curGizmo == null)
+        { // Re-Text
+          Text t = (Text)curObj.getNodeList().get(1);
+          String newText = askText(t.getText(), null);
+          if (newText != null)
+          {
+            t.setText(newText);
+            curObj.setGizmoActive(pane, true);
+          }
+        }
+      }
+      else
+      { // New Text
+        if (wasGizmoNull)
+        {
+          s_txt = askText(null, pane);
+        }
+      }
     }
     else if (evType == EventType.RELEASE)
     {
-      createPaintObject(r, t);
-      r = null;
-      t = null;
+      if (curGizmo!=null)
+      { // RefreshGizmo
+        curObj.updateGizmoPositions();
+      }
+      else if (curObj==null)
+      { // Finish Object
+        createPaintObject(r, t);
+        r = null;
+        t = null;
+        pane.setCursor(Cursor.DEFAULT);
+      }
     }
   }
-  
+
+  private boolean reText(MouseEvent event)
+  {
+    EditTool.findCursorIntersectionShape(pane, (child) -> onIntersection(child), event.getX(), event.getY());
+    if (curGizmo == null) { PaintObject.clearGizmos(pane); }
+    if (curObj!=null) { return true; }
+    return false;
+  }
+
+  /** Intersection with mouse.
+   *  @see IntersectEvent.onIntersect(c,b) **/
+  private boolean onIntersection(Node child)
+  {
+    PaintObject pObj = PaintObject.findObjectOf(child);
+    if (pObj!=null)
+    {
+      if (pObj.getNodeList().size()<2) { return true; }
+      if (pObj.getNodeList().get(1) instanceof Text)
+      {
+        curObj = pObj;
+        return true;
+      }
+    }
+    pObj = PaintObject.findObjectOfGizmo(child);
+    if (pObj!=null)
+    {
+      curObj = pObj;
+      curGizmo = child;
+      return false;
+    }
+    return true;
+  }
+
   private void createPaintObject(Rectangle r, Text t)
   {
     new PaintObject(r, t)
@@ -201,6 +279,12 @@ public class TxtTool implements ITool
   @Override
   public void onSelected()
   {
-    askText();
+    s_txt = askText(s_txt, pane);
+  }
+
+  @Override
+  public void onDeselected()
+  {
+    pane.setCursor(Cursor.DEFAULT);
   }
 }

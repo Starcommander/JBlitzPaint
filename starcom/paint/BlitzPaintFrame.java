@@ -360,7 +360,9 @@ public class BlitzPaintFrame
   private void selectTool(String id)
   {
     System.out.println("Selected tool: " + id);
+    ITool lastTool = currentTool;
     currentTool = tools.get(id);
+    if (lastTool != null) { lastTool.onDeselected(); }
     if (currentTool != null)
     {
       currentTool.onSelected();

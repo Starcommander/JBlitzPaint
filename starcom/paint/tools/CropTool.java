@@ -91,5 +91,10 @@ public class CropTool extends CropToolAbstract
   {
     headlessPaintObject.setGizmoActive(pane, true);
   }
+
+  @Override
+  public void onDeselected()
+  {
+  }
   
 }

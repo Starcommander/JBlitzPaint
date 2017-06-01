@@ -9,4 +9,5 @@ public interface ITool
   public void init(Pane pane);
   public void handle(EventType type, MouseEvent event);
   public void onSelected();
+  public void onDeselected();
 }

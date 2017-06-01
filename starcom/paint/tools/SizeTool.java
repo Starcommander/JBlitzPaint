@@ -131,5 +131,10 @@ public class SizeTool extends CropToolAbstract
   {
     showSelectFrame(pane);
   }
+
+  @Override
+  public void onDeselected()
+  {
+  }
   
 }
