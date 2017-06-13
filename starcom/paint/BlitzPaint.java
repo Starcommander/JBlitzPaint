@@ -64,9 +64,8 @@ public class BlitzPaint extends Application
     if (args.size()==0) { return false; }
     if (args.get(0).equals("-screenshot")) { return true; }
     if (!new File(args.get(0)).isFile()) { return false; }
-    if (args.get(0).endsWith(".png")) { frame.loadSaveFileDirect(false, args.get(0)); }
-    if (args.get(0).endsWith(".jpg")) { frame.loadSaveFileDirect(false, args.get(0)); }
-    if (args.get(0).endsWith(".bmp")) { frame.loadSaveFileDirect(false, args.get(0)); }
+    boolean isImage = starcom.Stg.endsWithIgnoreCase(args.get(0), 4, ".png", ".jpg", ".bmp");
+    if (isImage) { fullShot = new Image("file:" + args.get(0)); }
     return false;
   }
 

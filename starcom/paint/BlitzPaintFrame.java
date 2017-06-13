@@ -308,7 +308,9 @@ public class BlitzPaintFrame
   void loadSaveFile(boolean do_save)
   {
     FileChooser fileChooser = new FileChooser();
-    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.bmp");
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files",
+        "*.png", "*.jpg", "*.bmp",
+        "*.PNG", "*.JPG", "*.BMP");
     fileChooser.getExtensionFilters().add(extFilter);
    
     //Show save file dialog
