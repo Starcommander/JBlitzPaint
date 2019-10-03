@@ -17,27 +17,6 @@ public class LoggingSystem
   public static Level L_FINE = Level.FINE;
   public static Level L_FINER = Level.FINER;
   public static Level L_FINEST = Level.FINEST;
-  public static String LOG_FILE = starcom.Referenz.dir+"STARCOM.log";
-
-  public static void registerLoggerToFile(String aclass, Level level) { registerLoggerToFile(aclass,LOG_FILE,level); }
-  public static void registerLoggerToFile(String aclass, String file, Level level)
-  {
-    try
-    {
-      FileHandler fh = new FileHandler(file);
-      fh.setLevel(level);
-      fh.setFormatter(new SimpleFormatter());
-      Logger.getLogger(aclass).addHandler(fh);
-    } catch (Exception e) { e.printStackTrace(); }
-  }
-
-  public static void registerLoggerToConsole(String aclass, Level level)
-  {
-    Logger.getLogger(aclass).setUseParentHandlers(false); // Den Default ConsolenHandler ausschalten
-    ConsoleHandler ch = new ConsoleHandler();
-    ch.setLevel(level);
-    Logger.getLogger(aclass).addHandler(ch);
-  }
 
   public static void setLogLevel(Object aclass, Level level) { setLogLevel(aclass.getClass(),level); }
   public static void setLogLevel(Class<? extends Object> aclass, Level level) { setLogLevel(getName(aclass),level); }
@@ -64,26 +43,6 @@ public class LoggingSystem
   {
     String name = getName(aclass);
     Logger.getLogger(name).logp(level,name,"",msg);
-    if (TestProject.isTestingProject() && level == Level.SEVERE)
-    { // Use to prevent asking: java -DcontinueAllSevere=true App
-      CodePosition.print();
-      if (System.getProperty("continueAllSevere", "false").equals("false"))
-      {
-        System.out.println("--------------");
-        System.out.println("starcom.debug.LoggingSystem: Error occured!");
-        System.out.println("c=Continue a=ContinueAll q=Exit");
-        System.out.print(">>>");
-        char c = starcom.console.ConIO.readInputChar();
-        if (c == 'q')
-        {
-          System.exit(1);
-        }
-        else if (c == 'a')
-        {
-          System.setProperty("continueAllSevere", "true");
-        }
-      }
-    }
   }
 
   private static String join(String[] msg)
