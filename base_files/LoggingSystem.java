@@ -36,9 +36,6 @@ public class LoggingSystem
   public static void severe(Class<? extends Object> aclass, Exception e) { e.printStackTrace(); severe(aclass, aclass.toString()); }
   public static void severe(Class<? extends Object> aclass, Exception e, String... msg) { e.printStackTrace(); severe(aclass, aclass.toString()); }
 
-  public static void logToFile(Object aclass, String msg) { logToFile(aclass.getClass(),msg); }
-  public static void logToFile(Class<? extends Object> aclass, String msg) { starcom.IO.schreiben(LOG_FILE, getName(aclass)+":\n"+msg+"\n", 1); }
-
   private static void log(Level level, Class<? extends Object> aclass, String msg)
   {
     String name = getName(aclass);
