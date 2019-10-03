@@ -64,10 +64,10 @@ public class BlitzPaintFrame
     toolbar_paint.managedProperty().bind(toolbar_paint.visibleProperty());
     toolbar_canvas.managedProperty().bind(toolbar_canvas.visibleProperty());
     toolbar_canvas.setVisible(false);
-    pane.setOnDragDetected((ev) -> currentTool.handle(EventType.DRAG, ev));
+//    pane.setOnMouseMoved((ev) -> currentTool.handle(EventType.MOVE, ev)); // Not used yet!
     pane.setOnMousePressed((ev) -> currentTool.handle(EventType.CLICK, ev));
     pane.setOnMouseReleased((ev) -> currentTool.handle(EventType.RELEASE, ev));
-    pane.setOnMouseDragged((ev) -> currentTool.handle(EventType.MOVE, ev));
+    pane.setOnMouseDragged((ev) -> currentTool.handle(EventType.DRAG, ev));
     scrollPane.setOnKeyPressed((ev) -> onKey(ev));
     pane.setStyle("-fx-border-color: black");
   }

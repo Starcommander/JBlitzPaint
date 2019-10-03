@@ -95,7 +95,7 @@ public class TxtTool implements ITool
   @Override
   public void handle(EventType evType, MouseEvent event)
   {
-    if (evType == EventType.MOVE)
+    if (evType == EventType.DRAG)
     {
       if (curGizmo!=null)
       {

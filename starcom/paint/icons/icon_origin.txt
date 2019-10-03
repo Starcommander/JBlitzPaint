@@ -1,0 +1,12 @@
+- document_open.png -> JAppIndicator/src/starcom/gui/appindicator/icons/folder.png
+- document_save.png -> JAppIndicator/src/starcom/gui/appindicator/icons/document_save.png
+- drive_harddisk.png -> JAppIndicator/src/starcom/gui/appindicator/icons/drive_harddisk.png
+- edit_cut.png -> JAppIndicator/src/starcom/gui/appindicator/icons/edit_cut.png
+- edit_undo.png -> JAppIndicator/src/starcom/gui/appindicator/icons/edit_undo.png
+- frame.png
+- frame_size.png
+- go_up.png -> JAppIndicator/src/starcom/gui/appindicator/icons/go_up.png
+0 icon_origin.txt
+- preferences_desktop_font.png -> JAppIndicator/bin/starcom/gui/appindicator/icons/preferences_desktop_font.png
+- preferences_system.png -> JAppIndicator/src/starcom/gui/appindicator/icons/preferences_system.png
+- video_display.png -> JAppIndicator/src/starcom/gui/appindicator/icons/video_display.png

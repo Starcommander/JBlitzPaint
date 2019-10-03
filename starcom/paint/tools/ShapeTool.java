@@ -5,22 +5,20 @@ import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.transform.Rotate;
 import starcom.paint.BlitzPaintFrame;
 import starcom.paint.PaintObject;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeLineCap;
 
-public class ArrowTool implements ITool
+public class ShapeTool implements ITool
 {
   static int tail_len = 30;
   static int line_thick = 10;
   static double opacity = 0.8;
   Pane pane;
   Line line;
-  Polygon polygon;
+  Circle circle;
   
   void makeShape()
   {
@@ -30,16 +28,11 @@ public class ArrowTool implements ITool
     line.setStrokeLineCap(StrokeLineCap.BUTT);
     line.setOpacity(opacity);
     pane.getChildren().add(line);
-    
-    polygon = new Polygon();
-    polygon.getPoints().addAll(new Double[]{
-        0.0, 0.0,
-        0.0 - line_thick, 0.0 - tail_len,
-        0.0 + line_thick, 0.0 - tail_len });
-    polygon.setStroke(BlitzPaintFrame.color.darker());
-    polygon.setFill(BlitzPaintFrame.color);
-    polygon.setOpacity(opacity);
-    pane.getChildren().add(polygon);
+    circle = new Circle(10);
+    circle.setStroke(BlitzPaintFrame.color.darker());
+    circle.setFill(BlitzPaintFrame.color);
+    circle.setOpacity(opacity);
+    pane.getChildren().add(circle);
   }
   
   @Override
@@ -52,45 +45,48 @@ public class ArrowTool implements ITool
   public void handle(EventType evType, MouseEvent event)
   {
     EventHandle:
-    if (evType == EventType.DRAG)
+    if (evType == EventType.MOVE || evType == EventType.DRAG)
     {
       if (line==null) { break EventHandle; }
+      System.out.println("MM=Move!");
       double posX = event.getX();
       double posY = event.getY();
-      update(line, polygon, line.getStartX(),line.getStartY(),posX,posY);
+      update(line, circle, line.getStartX(),line.getStartY(),posX,posY);
     }
     else if (evType == EventType.CLICK)
     {
+      System.out.println("MM=Click!");
+      if (line!=null && circle!=null)
+      {
+        System.out.println("MM=Click.paint!");
+        createPaintObject(line, circle);
+        line = null;
+        circle = null;
+      }
       makeShape();
       double posX = event.getX();
       double posY = event.getY();
-      update(line, polygon, posX,posY,posX,posY);
-    }
-    else if (evType == EventType.RELEASE)
-    {
-      createPaintObject(line, polygon);
-      line = null;
-      polygon = null;
+      update(line, circle, posX,posY,posX,posY);
     }
   }
 
-  private void createPaintObject(Line line2, Polygon polygon2)
+  private void createPaintObject(Line line2, Circle circle)
   {
-    new PaintObject(line, polygon)
+    new PaintObject(line, circle)
     {
       @Override
       public void moveGizmo(Node gizmo, double posX, double posY)
       {
         String s_giz = gizmo.getUserData().toString();
         Line line = (Line)getNodeList().get(0);
-        Polygon polygon = (Polygon)getNodeList().get(1);
+        Circle circle = (Circle)getNodeList().get(1);
         if (s_giz.equals(GIZMO_START))
         {
-          update(line, polygon, posX, posY, polygon.getTranslateX(), polygon.getTranslateY());
+          update(line, circle, posX, posY, circle.getTranslateX(), circle.getTranslateY());
         }
         else if (s_giz.equals(GIZMO_END))
         {
-          update(line, polygon, line.getStartX(), line.getStartY(), posX, posY);
+          update(line, circle, line.getStartX(), line.getStartY(), posX, posY);
         }
         if (s_giz.equals(GIZMO_CENTER))
         {
@@ -100,9 +96,9 @@ public class ArrowTool implements ITool
           cy = line.getEndY() + (cy/2.0);
           double movX = posX -cx;
           double movY = posY -cy;
-          double ex = polygon.getTranslateX() + movX;
-          double ey = polygon.getTranslateY() + movY;
-          update(line, polygon, line.getStartX() + movX, line.getStartY() + movY, ex, ey);
+          double ex = circle.getTranslateX() + movX;
+          double ey = circle.getTranslateY() + movY;
+          update(line, circle, line.getStartX() + movX, line.getStartY() + movY, ex, ey);
         }
       }
       
@@ -137,7 +133,7 @@ public class ArrowTool implements ITool
     };
   }
 
-  private static void update(Line line, Polygon polygon, double x1, double y1, double x2, double y2)
+  private static void update(Line line, Circle circle, double x1, double y1, double x2, double y2)
   {
     /* Line start end. */
     line.setStartX(x1);
@@ -150,21 +146,8 @@ public class ArrowTool implements ITool
     double b = line.getEndY() - line.getStartY();
     if (a==0) { a = 1; }
     if (b==0) { b = 1; }
-    double alpha = starcom.math.Winkel.getAlpha(b, a) + 90.0;
-    if (a>0) { alpha += 180.0; }
-    polygon.getTransforms().clear();
-    polygon.getTransforms().add(new Rotate(alpha, 0.0, 0.0, 0.0, Rotate.Z_AXIS));
-    polygon.setTranslateX(line.getEndX());
-    polygon.setTranslateY(line.getEndY());
-
-    /* Line reduce end. */
-    double c = starcom.math.Winkel.getC(a, b);
-    if (c<1) { c=1; }
-    double mult = tail_len/c;
-    a = a * mult;
-    b = b * mult;
-    line.setEndX(line.getEndX() - a);
-    line.setEndY(line.getEndY() - b);
+    circle.setTranslateX(line.getEndX());
+    circle.setTranslateY(line.getEndY());
   }
 
   @Override

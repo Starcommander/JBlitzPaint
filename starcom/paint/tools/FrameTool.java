@@ -48,7 +48,7 @@ public class FrameTool implements ITool
   public void handle(EventType evType, MouseEvent event)
   {
     EventHandle:
-    if (evType == EventType.MOVE)
+    if (evType == EventType.DRAG)
     {
       if (r==null) { break EventHandle; }
       double posX = event.getX();

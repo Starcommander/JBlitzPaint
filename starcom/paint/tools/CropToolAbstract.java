@@ -56,7 +56,7 @@ public abstract class CropToolAbstract implements ITool
   public void handle(EventType evType, MouseEvent event)
   {
     EventHandle:
-    if (evType == EventType.MOVE)
+    if (evType == EventType.DRAG)
     {
       if (selectedGizmo==null) { break EventHandle; }
       double posX = event.getX();
