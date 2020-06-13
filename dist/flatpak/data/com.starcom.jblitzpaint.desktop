@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=JBlitzPaint
+Comment=Paint editor for marking screenshots
+Exec=jblitzpaint %U
+StartupNotify=true
+Terminal=false
+Type=Application
+MimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;
+Icon=com.starcom.jblitzpaint
+Categories=Graphics;RasterGraphics;
+Keywords=graphics;editor;paint
+
