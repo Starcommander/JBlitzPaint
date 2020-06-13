@@ -3,7 +3,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.starcom.app</groupId>
   <artifactId>jblitzpaint</artifactId>
-  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>jblitzpaint</name>
   <url>http://maven.apache.org</url>
@@ -14,5 +13,34 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>12.0.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>12.0.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-swing</artifactId>
+        <version>12.0.2</version>
+    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <release>11</release>
+          <!-- source>1.11</source>
+          <target>1.11</target -->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
