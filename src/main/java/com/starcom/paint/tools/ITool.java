@@ -1,4 +1,4 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

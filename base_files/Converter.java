@@ -1,4 +1,4 @@
-package starcom.pix;
+package com.starcom.pix;
 
 /**
 * Um ein einfaches Bild zu konvertieren!

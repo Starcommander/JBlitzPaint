@@ -1,4 +1,4 @@
-package starcom.system;
+package com.starcom.system;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -15,7 +15,7 @@ import javax.jnlp.UnavailableServiceException;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import starcom.debug.LoggingSystem;
+import com.starcom.debug.LoggingSystem;
 
 public class ClipboardTool
 {
@@ -24,7 +24,7 @@ public class ClipboardTool
   /** Get the ClipboardTool from jnlp or awt. **/
   public ClipboardTool()
   {
-    if (starcom.system.ClassPath.isClassAvailable("javax.jnlp.ClipboardService"))
+    if (com.starcom.system.ClassPath.isClassAvailable("javax.jnlp.ClipboardService"))
     {
       cs = JnlpClipboardService.getClipboardService();
     }

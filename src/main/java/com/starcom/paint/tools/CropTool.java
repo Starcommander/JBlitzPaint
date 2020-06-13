@@ -1,4 +1,4 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import java.util.ArrayList;
 
@@ -9,9 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import starcom.paint.BlitzPaint;
-import starcom.paint.BlitzPaintFrame;
-import starcom.paint.PaintObject;
+import com.starcom.paint.BlitzPaint;
+import com.starcom.paint.BlitzPaintFrame;
+import com.starcom.paint.PaintObject;
 
 public class CropTool extends CropToolAbstract
 {

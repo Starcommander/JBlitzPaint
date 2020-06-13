@@ -1,12 +1,12 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import java.util.ArrayList;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import starcom.paint.BlitzPaintFrame;
-import starcom.paint.PaintObject;
+import com.starcom.paint.BlitzPaintFrame;
+import com.starcom.paint.PaintObject;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;

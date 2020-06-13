@@ -1,4 +1,4 @@
-package starcom.debug;
+package com.starcom.debug;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;

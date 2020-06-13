@@ -1,4 +1,4 @@
-package starcom.paint;
+package com.starcom.paint;
 
 import java.util.ArrayList;
 

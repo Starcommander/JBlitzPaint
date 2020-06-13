@@ -1,4 +1,4 @@
-package starcom.paint;
+package com.starcom.paint;
 
 import java.io.File;
 import java.util.List;
@@ -64,7 +64,7 @@ public class BlitzPaint extends Application
     if (args.size()==0) { return false; }
     if (args.get(0).equals("-screenshot")) { return true; }
     if (!new File(args.get(0)).isFile()) { return false; }
-    boolean isImage = starcom.Stg.endsWithIgnoreCase(args.get(0), 4, ".png", ".jpg", ".bmp");
+    boolean isImage = com.starcom.Stg.endsWithIgnoreCase(args.get(0), 4, ".png", ".jpg", ".bmp");
     if (isImage) { fullShot = new Image("file:" + args.get(0)); }
     return false;
   }

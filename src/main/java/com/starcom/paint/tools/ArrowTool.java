@@ -1,4 +1,4 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import java.util.ArrayList;
 
@@ -6,8 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
-import starcom.paint.BlitzPaintFrame;
-import starcom.paint.PaintObject;
+import com.starcom.paint.BlitzPaintFrame;
+import com.starcom.paint.PaintObject;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
@@ -150,7 +150,7 @@ public class ArrowTool implements ITool
     double b = line.getEndY() - line.getStartY();
     if (a==0) { a = 1; }
     if (b==0) { b = 1; }
-    double alpha = starcom.math.Winkel.getAlpha(b, a) + 90.0;
+    double alpha = com.starcom.math.Winkel.getAlpha(b, a) + 90.0;
     if (a>0) { alpha += 180.0; }
     polygon.getTransforms().clear();
     polygon.getTransforms().add(new Rotate(alpha, 0.0, 0.0, 0.0, Rotate.Z_AXIS));
@@ -158,7 +158,7 @@ public class ArrowTool implements ITool
     polygon.setTranslateY(line.getEndY());
 
     /* Line reduce end. */
-    double c = starcom.math.Winkel.getC(a, b);
+    double c = com.starcom.math.Winkel.getC(a, b);
     if (c<1) { c=1; }
     double mult = tail_len/c;
     a = a * mult;

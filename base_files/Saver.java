@@ -1,10 +1,10 @@
-package starcom.pix;
+package com.starcom.pix;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
-import static starcom.debug.LoggingSystem.*;
+import static com.starcom.debug.LoggingSystem.*;
 
 public class Saver
 {
@@ -49,13 +49,13 @@ public class Saver
 
   static String getFormatFromFileName(String ziel)
   {
-    if (starcom.Stg.endsWithIgnoreCase(ziel, ".jpg")) { return "JPEG"; }
-    else if (starcom.Stg.endsWithIgnoreCase(ziel, ".jpeg")) { return "JPEG"; }
-    else if (starcom.Stg.endsWithIgnoreCase(ziel, ".png")) { return "PNG"; }
-    else if (starcom.Stg.endsWithIgnoreCase(ziel, ".bmp")) { return "BMP"; }
-    else if (starcom.Stg.endsWithIgnoreCase(ziel, ".tiff")) { return "TIFF"; }
-    else if (starcom.Stg.endsWithIgnoreCase(ziel, ".gif")) { return "GIF"; }
-    else if (starcom.Stg.endsWithIgnoreCase(ziel, ".wbmp")) { return "WBMP"; } // wbmp?
+    if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".jpg")) { return "JPEG"; }
+    else if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".jpeg")) { return "JPEG"; }
+    else if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".png")) { return "PNG"; }
+    else if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".bmp")) { return "BMP"; }
+    else if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".tiff")) { return "TIFF"; }
+    else if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".gif")) { return "GIF"; }
+    else if (com.starcom.Stg.endsWithIgnoreCase(ziel, ".wbmp")) { return "WBMP"; } // wbmp?
     else { return null; }
   }
 

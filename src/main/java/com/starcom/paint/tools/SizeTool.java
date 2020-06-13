@@ -1,4 +1,4 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -15,9 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
-import starcom.math.Point2i;
-import starcom.paint.BlitzPaintFrame;
-import starcom.paint.PaintObject;
+import com.starcom.math.Point2i;
+import com.starcom.paint.BlitzPaintFrame;
+import com.starcom.paint.PaintObject;
 
 public class SizeTool extends CropToolAbstract
 {

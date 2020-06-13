@@ -1,12 +1,12 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import starcom.paint.PaintObject;
-import starcom.paint.events.IntersectEvent;
+import com.starcom.paint.PaintObject;
+import com.starcom.paint.events.IntersectEvent;
 
 public class EditTool implements ITool
 {

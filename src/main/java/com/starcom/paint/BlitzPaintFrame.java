@@ -1,4 +1,4 @@
-package starcom.paint;
+package com.starcom.paint;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -6,10 +6,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import starcom.paint.tools.ITool;
-import starcom.paint.tools.ITool.EventType;
-import starcom.paint.tools.SizeTool;
-import starcom.system.ClipboardTool;
+import com.starcom.paint.tools.ITool;
+import com.starcom.paint.tools.ITool.EventType;
+import com.starcom.paint.tools.SizeTool;
+import com.starcom.system.ClipboardTool;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -337,7 +337,7 @@ public class BlitzPaintFrame
     {
       WritableImage image = new WritableImage((int)pane.getWidth(), (int)pane.getHeight());
       pane.snapshot(null, image);
-      starcom.pix.Saver.save(SwingFXUtils.fromFXImage(image,null), file);
+      com.starcom.pix.Saver.save(SwingFXUtils.fromFXImage(image,null), file);
     }
     else
     {

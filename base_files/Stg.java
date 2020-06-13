@@ -24,7 +24,7 @@ public class Stg
   { // Konvertiert zum String in UTF_8, wenn supported!
     try
     {
-      return new String(b,starcom.IO.UTF_8);
+      return new String(b,com.starcom.IO.UTF_8);
     } catch (UnsupportedEncodingException e) { e.printStackTrace(); }
     return null;
   }
@@ -33,7 +33,7 @@ public class Stg
   { // Konvertiert zum ByteArray in UTF_8, wenn supported!
     try
     {
-      return s.getBytes(starcom.IO.UTF_8);
+      return s.getBytes(com.starcom.IO.UTF_8);
     } catch (UnsupportedEncodingException e) { e.printStackTrace(); }
     return null;
   }
@@ -215,7 +215,7 @@ public class Stg
     int index = n.length;
     for (int i=n.length-1; i>=0; i--)
     {
-      if (!starcom.Stg.zahl(n[i])) { break; }
+      if (!com.starcom.Stg.zahl(n[i])) { break; }
       index = i;
     }
     return name.substring(0,index);

@@ -1,4 +1,4 @@
-package starcom.paint.tools;
+package com.starcom.paint.tools;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import starcom.paint.PaintObject;
+import com.starcom.paint.PaintObject;
 
 public abstract class CropToolAbstract implements ITool
 {

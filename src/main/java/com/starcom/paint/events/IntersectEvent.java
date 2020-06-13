@@ -1,4 +1,4 @@
-package starcom.paint.events;
+package com.starcom.paint.events;
 
 import javafx.scene.Node;
 

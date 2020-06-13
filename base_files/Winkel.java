@@ -1,4 +1,4 @@
-package starcom.math;
+package com.starcom.math;
 
 
 // Winkelberechnung!
