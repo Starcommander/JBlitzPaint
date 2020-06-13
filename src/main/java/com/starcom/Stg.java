@@ -1,4 +1,4 @@
-package starcom;
+package com.starcom;
 
 import java.util.*;
 import java.io.UnsupportedEncodingException;
