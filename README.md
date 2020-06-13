@@ -13,13 +13,14 @@ Features:
 - Resize and Crop Frame.
 
 Quickstart:
-- Start the jar file from bin folder.
-- On Commandline: java -jar JBlitzPaint.jar
-- Or right-mouse-click: open with java.
+- Build and start with maven:
+- - mvn compile
+- - mvn package
+- - java --add-modules=java.base,javafx.base,javafx.fxml,javafx.graphics,javafx.swing,javafx.controls --module-path target/lib/ -cp "target/lib/*.jar" -jar target/jblitzpaint-1.0-SNAPSHOT.jar
 
 Arguments:
-- To take Screenshot directly: java -jar JBlitzPaint.jar -screenshot
-- To open file directly: java -jar JBlitzPaint file.png
+- To take Screenshot directly attach this argument to java-execution: -screenshot
+- To open file directly attach this: path/file.png
 
 Dependencies:
-- Needs java-version 8 to start.
+- Needs java-version 11 to start.
