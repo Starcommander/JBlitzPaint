@@ -275,19 +275,11 @@ public class BlitzPaintFrame
     {
       PaintObject.clearAllObjects(pane);
       pane.setCursor(Cursor.WAIT);
-      Thread thread = new Thread(() ->
-      {
-        Image contentPix = null;
-        contentPix = clipTool.getImageFromClipboard();
-        if (contentPix==null) { contentPix = new WritableImage(400,200); }
-        final Image contentPixFinal = contentPix;
-        Platform.runLater(() ->
-        {
-          pane.setCursor(Cursor.DEFAULT);
-          openPix(pane, contentPixFinal);
-        });
-      });
-      thread.start();
+      Image contentPix = null;
+      contentPix = clipTool.getImageFromClipboard();
+      if (contentPix==null) { contentPix = new WritableImage(400,200); }
+      pane.setCursor(Cursor.DEFAULT);
+      openPix(pane, contentPix);
     }
   }
   
