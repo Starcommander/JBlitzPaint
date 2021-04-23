@@ -14,8 +14,6 @@ import javafx.stage.Stage;
 
 public class BlitzPaint extends Application
 {
-  public static Image fullShot;
-
   public static void main(String[] args)
   {
     Application.launch(BlitzPaint.class, args);
@@ -39,7 +37,7 @@ public class BlitzPaint extends Application
     else { frame.onShowPre(); stage.show(); frame.onShowPost(); }
   }
   
-  private void takeShot(Stage stage, BlitzPaintFrame frame)
+  private static void takeShot(Stage stage, BlitzPaintFrame frame)
   {
     Task<Void> t = new Task<Void>()
     {
@@ -50,7 +48,7 @@ public class BlitzPaint extends Application
         java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
         java.awt.Rectangle rect = new java.awt.Rectangle(tk.getScreenSize());
         java.awt.image.BufferedImage im = robot.createScreenCapture(rect);
-        fullShot = SwingFXUtils.toFXImage(im,null);
+        Frame.fullShot = SwingFXUtils.toFXImage(im,null);
         return null;
       }
     };
@@ -58,14 +56,14 @@ public class BlitzPaint extends Application
     new Thread(t).start();
   }
 
-  private boolean handleArgs(Parameters parameters, BlitzPaintFrame frame)
+  private static boolean handleArgs(Parameters parameters, BlitzPaintFrame frame)
   {
     List<String> args = parameters.getUnnamed();
     if (args.size()==0) { return false; }
     if (args.get(0).equals("-screenshot")) { return true; }
     if (!new File(args.get(0)).isFile()) { return false; }
     boolean isImage = com.starcom.Stg.endsWithIgnoreCase(args.get(0), 4, ".png", ".jpg", ".bmp");
-    if (isImage) { fullShot = new Image("file:" + args.get(0)); }
+    if (isImage) { Frame.fullShot = new Image("file:" + args.get(0)); }
     return false;
   }
 

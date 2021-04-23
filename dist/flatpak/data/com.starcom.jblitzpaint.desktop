@@ -9,4 +9,12 @@ MimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shor
 Icon=com.starcom.jblitzpaint
 Categories=Graphics;RasterGraphics;
 Keywords=graphics;editor;paint
+Actions=NewInst;CreateShot;
 
+[Desktop Action NewInst]
+Exec=jblitzpaint
+Name=Open new window
+
+[Desktop Action CreateShot]
+Exec=jblitzpaint -screenshot
+Name=Create a new Screenshot!

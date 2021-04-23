@@ -10,7 +10,6 @@ import com.starcom.paint.tools.ITool;
 import com.starcom.paint.tools.ITool.EventType;
 import com.starcom.paint.tools.SizeTool;
 import com.starcom.system.ClipboardTool;
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +31,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
@@ -43,7 +41,6 @@ public class BlitzPaintFrame
   enum ToolBarType {Canvas, Paint};
   public static String ARROW_TOOL = "ArrowTool";
   public static String CROP_TOOL = "CropTool";
-  public static Color color = Color.RED;
   @FXML private Pane pane;
   @FXML private ScrollPane scrollPane;
   @FXML private Button settingsButton;
@@ -71,27 +68,27 @@ public class BlitzPaintFrame
     scrollPane.setOnKeyPressed((ev) -> onKey(ev));
     pane.setStyle("-fx-border-color: black");
   }
-  
+
   public void onShowPre()
   {
-    if (BlitzPaint.fullShot==null)
+    if (Frame.fullShot==null)
     {
-      openEmptyPix(pane, 400, 200);
+      Frame.openEmptyPix(pane, 400, 200);
       selectTool(ARROW_TOOL);
       lastSelectedToolButton = arrowTool;
       changeButtonActive(arrowTool, true);
     }
     else
     {
-      Image pix = SizeTool.getScaledInstance(BlitzPaint.fullShot, 400, 0, true);
-      openPix(pane, pix);
+      Image pix = SizeTool.getScaledInstance(Frame.fullShot, 400, 0, true);
+      Frame.openPix(pane, pix);
     }
     clipChildren();
   }
   
   public void onShowPost()
   {
-    if (BlitzPaint.fullShot!=null)
+    if (Frame.fullShot!=null)
     {
       selectTool(CROP_TOOL);
       lastSelectedToolButton = cropTool;
@@ -190,7 +187,7 @@ public class BlitzPaintFrame
       MenuItem m_empty = new MenuItem("Empty");
       m_file.setOnAction((event) -> loadSaveFile(false));
       m_clip.setOnAction((event) -> loadSaveClip(false));
-      m_empty.setOnAction((event) -> openEmptyPix(pane, 400, 200));
+      m_empty.setOnAction((event) -> Frame.openEmptyPix(pane, 400, 200));
       contextMenu.getItems().addAll(m_clip, m_file, m_empty);
     }
     else // Settings
@@ -256,8 +253,8 @@ public class BlitzPaintFrame
   {
     Popup win = new Popup();
     win.setAutoHide(true);
-    ColorPicker colorPicker = new ColorPicker(color);
-    colorPicker.setOnAction((event) -> color = colorPicker.getValue() );
+    ColorPicker colorPicker = new ColorPicker(Frame.color);
+    colorPicker.setOnAction((event) -> Frame.color = colorPicker.getValue() );
     win.getContent().add(colorPicker);
     Point pos = MouseInfo.getPointerInfo().getLocation();
     win.show(sourceN, pos.x, pos.y);
@@ -279,24 +276,10 @@ public class BlitzPaintFrame
       contentPix = clipTool.getImageFromClipboard();
       if (contentPix==null) { contentPix = new WritableImage(400,200); }
       pane.setCursor(Cursor.DEFAULT);
-      openPix(pane, contentPix);
+      Frame.openPix(pane, contentPix);
     }
   }
-  
-  public static void openPix(Pane pane, Image pix)
-  {
-    pane.getChildren().clear();
-    pane.setMaxSize(pix.getWidth(), pix.getHeight());
-    pane.getChildren().add(createImageView(pix));
-  }
-  
-  public static void openEmptyPix(Pane pane, int sizeX, int sizeY)
-  {
-    PaintObject.clearAllObjects(pane);
-    WritableImage contentPix = new WritableImage(sizeX, sizeY);
-    openPix(pane, contentPix);
-  }
-  
+
   void loadSaveFile(boolean do_save)
   {
     FileChooser fileChooser = new FileChooser();
@@ -335,7 +318,7 @@ public class BlitzPaintFrame
     {
       PaintObject.clearAllObjects(pane);
       Image contentPix = new Image("file:" + file);
-      openPix(pane, contentPix);
+      Frame.openPix(pane, contentPix);
     }
   }
   
@@ -371,12 +354,5 @@ public class BlitzPaintFrame
     currentTool.init(pane);
     currentTool.onSelected();
     tools.put(id, currentTool);
-  }
-
-  public static ImageView createImageView(Image image)
-  {
-    ImageView iv = new ImageView();
-    iv.setImage(image);
-    return iv;
   }
 }
