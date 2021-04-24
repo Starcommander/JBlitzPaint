@@ -6,6 +6,11 @@
   <version>1.0-SNAPSHOT</version>
   <name>jblitzpaint</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -28,13 +33,33 @@
         <artifactId>javafx-swing</artifactId>
         <version>12.0.2</version>
     </dependency>
+    <dependency>
+      <groupId>com.starcom</groupId>
+      <artifactId>starcom-base</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.starcom</groupId>
+      <artifactId>starcom-pix</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.starcom</groupId>
+      <artifactId>starcom-fx-paint</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.starcom</groupId>
+      <artifactId>starcom-fx-clipboard</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.0</version>
         <configuration>
           <release>11</release>
         </configuration>
@@ -47,26 +72,19 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.starcom.paint.BlitzPaint</mainClass>
+              <mainClass>com.starcom.app.BlitzPaint</mainClass>
               <classpathPrefix>dependency-jars/</classpathPrefix>
             </manifest>
           </archive>
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.directory}/lib</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.3</version>
+        <configuration>
+          <mainClass>com.starcom.app.BlitzPaint</mainClass>
+        </configuration>
       </plugin>
     </plugins>
   </build>

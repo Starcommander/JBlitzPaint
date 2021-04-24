@@ -1,4 +1,4 @@
-package com.starcom.paint;
+package com.starcom.app;
 
 import java.io.File;
 import java.util.List;
@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import com.starcom.paint.Frame;
 
 public class BlitzPaint extends Application
 {

@@ -9,7 +9,7 @@
 <?import javafx.scene.*?>
 
 
-<BorderPane fx:controller="com.starcom.paint.BlitzPaintFrame"
+<BorderPane fx:controller="com.starcom.app.BlitzPaintFrame"
     xmlns:fx="http://javafx.com/fxml" prefHeight="200" prefWidth="320">
 
   <top>
@@ -25,7 +25,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/go_up.png" />
+		          <Image url="com/starcom/app/icons/go_up.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -35,7 +35,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/frame.png" />
+		          <Image url="com/starcom/app/icons/frame.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -45,7 +45,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/preferences_desktop_font.png" />
+		          <Image url="com/starcom/app/icons/preferences_desktop_font.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -55,7 +55,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/edit_undo.png" />
+		          <Image url="com/starcom/app/icons/edit_undo.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -69,7 +69,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/edit_cut.png" />
+		          <Image url="com/starcom/app/icons/edit_cut.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -79,7 +79,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/frame_size.png" />
+		          <Image url="com/starcom/app/icons/frame_size.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -107,7 +107,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/preferences_system.png" />
+		          <Image url="com/starcom/app/icons/preferences_system.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -117,7 +117,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/document_open.png" />
+		          <Image url="com/starcom/app/icons/document_open.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -127,7 +127,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/paint/icons/document_save.png" />
+		          <Image url="com/starcom/app/icons/document_save.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
