@@ -13,10 +13,10 @@ Features:
 - Resize and Crop Frame.
 
 Quickstart:
+- First install the [JBaseModules](https://github.com/Starcommander/JBaseModules)
 - Build and start with maven:
 - - mvn compile
-- - mvn package
-- - java --add-modules=java.base,javafx.base,javafx.fxml,javafx.graphics,javafx.swing,javafx.controls --module-path target/lib/ -cp "target/lib/*.jar" -jar target/jblitzpaint-1.0-SNAPSHOT.jar
+- - mvn javafx:run
 
 Arguments:
 - To take Screenshot directly attach this argument to java-execution: -screenshot

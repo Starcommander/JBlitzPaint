@@ -86,7 +86,7 @@ public class BlitzPaintFrame
       Image pix = SizeTool.getScaledInstance(Frame.fullShot, 400, 0, true);
       Frame.openPix(pane, pix);
     }
-    clipChildren();
+    Frame.clipChildren(pane);
   }
   
   public void onShowPost()
@@ -105,20 +105,6 @@ public class BlitzPaintFrame
     {
       PaintObject.clearFocusObject(pane);
     }
-  }
-
-  private void clipChildren()
-  {
-    int arc = 3;
-    final Rectangle outputClip = new Rectangle();
-    outputClip.setArcWidth(arc);
-    outputClip.setArcHeight(arc);
-    pane.setClip(outputClip);
-    pane.layoutBoundsProperty().addListener((ov, oldValue, newValue) ->
-    {
-      outputClip.setWidth(newValue.getWidth());
-      outputClip.setHeight(newValue.getHeight());
-    });
   }
   
   @FXML void selectTool(ActionEvent event)
