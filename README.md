@@ -15,8 +15,9 @@ Features:
 Quickstart:
 - First install the [JBaseModules](https://github.com/Starcommander/JBaseModules)
 - Build and start with maven:
-- - mvn compile
 - - mvn javafx:run
+- Build runnable:
+- - mvn clean javafx:jlink
 
 Arguments:
 - To take Screenshot directly attach this argument to java-execution: -screenshot
