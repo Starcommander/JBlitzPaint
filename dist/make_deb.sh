@@ -41,21 +41,6 @@ write_icon_to() # Args: targetDir
   cp dist/flatpak/data/com.starcom.jblitzpaint.png "$1"
 }
 
-write_control() # Args: targetFile
-{
-  echo '
-Package: starcom-jblitzpaint
-Version: 1.0
-Architecture: amd64
-Maintainer: Paul Kashofer <starcommander@gmx.at>
-Installed-Size: 10000
-Depends: bash (>= 4.0-0), openjdk-11-jre | openjdk-12-jre | openjdk-13-jre | openjdk-14-jre
-Priority: optional
-Homepage: https://github.com/starcommander/
-Description: Fast paint tool in javafx for simple marker jobs
- Can also take screenshots.' > "$1"
-}
-
 check_cmd "fakeroot"
 check_cmd "dpkg"
 check_cmd "dpkg-deb"
@@ -70,8 +55,8 @@ mkdir -p "$TMP_DIR/usr/share/applications"
 mkdir -p "$TMP_DIR/usr/share/icons/hicolor/256x256/apps/"
 write_start_sh "$TMP_DIR/usr/bin/jblitzpaint"
 write_desktop_to "$TMP_DIR/usr/share/applications/"
-write_control "$TMP_DIR/DEBIAN/control"
 write_icon_to "$TMP_DIR/usr/share/icons/hicolor/256x256/apps/"
+cp dist/deb/* "$TMP_DIR/DEBIAN"
 
 cp target/jblitzpaint-1.0-SNAPSHOT.jar "$TMP_DIR/usr/lib/jblitzpaint/"
 cp target/lib/* "$TMP_DIR/usr/lib/jblitzpaint/lib"
