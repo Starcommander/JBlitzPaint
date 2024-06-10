@@ -25,7 +25,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/go_up.png" />
+		          <Image url="@icons/go_up.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -35,7 +35,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/frame.png" />
+		          <Image url="@icons/frame.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -45,7 +45,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/preferences_desktop_font.png" />
+		          <Image url="@icons/preferences_desktop_font.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -55,7 +55,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/edit_undo.png" />
+		          <Image url="@icons/edit_undo.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -69,7 +69,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/edit_cut.png" />
+		          <Image url="@icons/edit_cut.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -79,7 +79,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/frame_size.png" />
+		          <Image url="@icons/frame_size.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -107,7 +107,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/preferences_system.png" />
+		          <Image url="@icons/preferences_system.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -117,7 +117,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/document_open.png" />
+		          <Image url="@icons/document_open.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>
@@ -127,7 +127,7 @@
 		    <graphic>
 		      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 		        <image>
-		          <Image url="com/starcom/app/icons/document_save.png" />
+		          <Image url="@icons/document_save.png" />
 		        </image>
 		      </ImageView>
 		    </graphic>

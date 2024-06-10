@@ -11,8 +11,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.robot.Robot;
 
 import com.starcom.paint.Frame;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.image.WritableImage;
+import javafx.stage.Screen;
 
 public class BlitzPaint extends Application
 {
@@ -41,21 +45,14 @@ public class BlitzPaint extends Application
   
   private static void takeShot(Stage stage, BlitzPaintFrame frame)
   {
-    Task<Void> t = new Task<Void>()
-    {
-      @Override
-      protected Void call() throws Exception
-      {
-        java.awt.Robot robot = new java.awt.Robot();
-        java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
-        java.awt.Rectangle rect = new java.awt.Rectangle(tk.getScreenSize());
-        java.awt.image.BufferedImage im = robot.createScreenCapture(rect);
-        Frame.fullShot = SwingFXUtils.toFXImage(im,null);
-        return null;
-      }
-    };
-    t.setOnSucceeded((ev) -> { frame.onShowPre(); stage.show(); frame.onShowPost(); });
-    new Thread(t).start();
+        Robot robot = new Robot();
+        var screenRect = Screen.getPrimary().getBounds();
+        WritableImage wi = new WritableImage((int)screenRect.getWidth(),(int)screenRect.getHeight());
+        Frame.fullShot = robot.getScreenCapture(wi, screenRect);
+        robot.mouseMove(30,30);
+        frame.onShowPre();
+        stage.show();
+        frame.onShowPost();
   }
 
   private static boolean handleArgs(Parameters parameters, BlitzPaintFrame frame)

@@ -1,7 +1,5 @@
 package com.starcom.app;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +10,7 @@ import com.starcom.paint.tools.SizeTool;
 import com.starcom.clipboard.ClipboardTool;
 import com.starcom.pix.Saver;
 import com.starcom.paint.Frame;
-import com.starcom.paint.PaintObject;
+import com.starcom.paint.AbstractPaintObject;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +32,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.robot.Robot;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
@@ -103,7 +102,7 @@ public class BlitzPaintFrame
   {
     if (ev.getCode() == KeyCode.DELETE)
     {
-      PaintObject.clearFocusObject(pane);
+      AbstractPaintObject.clearFocusObject(pane);
     }
   }
   
@@ -112,7 +111,7 @@ public class BlitzPaintFrame
     Object source = event.getSource();
     if (source instanceof Node)
     {
-      PaintObject.clearGizmos(pane);
+      AbstractPaintObject.clearGizmos(pane);
       Node sourceN = (Node) source;
       changeButtonActive(lastSelectedToolButton, false);
       lastSelectedToolButton = sourceN;
@@ -133,7 +132,7 @@ public class BlitzPaintFrame
     Object source = event.getSource();
     if (source instanceof Node)
     {
-      PaintObject.clearGizmos(pane);
+      AbstractPaintObject.clearGizmos(pane);
       Node sourceN = (Node) source;
       if (sourceN.getId().equals("saveBut"))
       {
@@ -192,8 +191,9 @@ public class BlitzPaintFrame
       m_about.setOnAction((event) -> showAbout(sourceN));
       contextMenu.getItems().addAll(m_color, sep1, toolBar_paint, toolBar_canvas, sep2, m_about);
     }
-    Point pos = MouseInfo.getPointerInfo().getLocation();
-    contextMenu.show(sourceN, pos.x, pos.y);
+    Robot robot = new Robot();
+    var pos = robot.getMousePosition();
+    contextMenu.show(sourceN, pos.getX(), pos.getY());
   }
 
   private void initToolbarList()
@@ -245,8 +245,9 @@ public class BlitzPaintFrame
     ColorPicker colorPicker = new ColorPicker(Frame.color);
     colorPicker.setOnAction((event) -> Frame.color = colorPicker.getValue() );
     win.getContent().add(colorPicker);
-    Point pos = MouseInfo.getPointerInfo().getLocation();
-    win.show(sourceN, pos.x, pos.y);
+    Robot robot = new Robot();
+    var pos = robot.getMousePosition();
+    win.show(sourceN, pos.getX(), pos.getY());
   }
 
   void loadSaveClip(boolean do_save)
@@ -259,7 +260,7 @@ public class BlitzPaintFrame
     }
     else
     {
-      PaintObject.clearAllObjects(pane);
+      AbstractPaintObject.clearAllObjects(pane);
       pane.setCursor(Cursor.WAIT);
       Image contentPix = null;
       contentPix = clipTool.getImageFromClipboard();
@@ -305,7 +306,7 @@ public class BlitzPaintFrame
     }
     else
     {
-      PaintObject.clearAllObjects(pane);
+      AbstractPaintObject.clearAllObjects(pane);
       Image contentPix = new Image("file:" + file);
       Frame.openPix(pane, contentPix);
     }
