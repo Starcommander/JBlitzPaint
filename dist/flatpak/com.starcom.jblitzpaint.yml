@@ -1,10 +1,8 @@
 ---
 app-id: com.starcom.jblitzpaint
 runtime: org.freedesktop.Platform
-runtime-version: '19.08'
+runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
-sdk-extensions:
-  - org.freedesktop.Sdk.Extension.openjdk11
 command: jblitzpaint
 finish-args:
   - --filesystem=xdg-download
@@ -13,29 +11,17 @@ finish-args:
   - --socket=x11
   - --device=dri
 modules:
-  - name: openjdk
-    buildsystem: simple
-    build-commands:
-      - /usr/lib/sdk/openjdk11/install.sh
   - name: jblitzpaint
     buildsystem: simple
     build-commands:
       - echo "x"
-      - mkdir -p /app/lib/all
       - mkdir -p /app/share/appdata/
       - mkdir -p /app/share/applications/
-      - cp -r target/lib/* /app/lib/all
-      - ls target/jblitzpaint-1.0-SNAPSHOT.jar
-      - install -Dm755 jblitzpaint /app/bin/jblitzpaint
-      - install -Dm644 target/jblitzpaint-1.0-SNAPSHOT.jar /app/lib/jblitzpaint.jar
+      - cp -r target/app/* /app/
       - install -Dm644 data/com.starcom.jblitzpaint.appdata.xml /app/share/appdata/com.starcom.jblitzpaint.appdata.xml
       - install -Dm644 data/com.starcom.jblitzpaint.desktop /app/share/applications/com.starcom.jblitzpaint.desktop
       - install -Dm644 data/com.starcom.jblitzpaint.png /app/share/icons/hicolor/256x256/apps/com.starcom.jblitzpaint.png
     sources:
-      - type: script
-        dest-filename: jblitzpaint
-        commands:
-          - /app/jre/bin/java --add-modules=java.base,javafx.base,javafx.fxml,javafx.graphics,javafx.swing,javafx.controls --module-path /app/lib/all/ -cp "/app/lib/*.jar:/app/lib/all/*" -jar /app/lib/jblitzpaint.jar
       - type: dir
         path: target/
         dest: target
